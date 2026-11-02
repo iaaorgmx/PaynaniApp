@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pantalla de arranque: el logotipo vertical de paynani, centrado sobre papel. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <color android:color="@color/paynani_papel" />
+    </item>
+    <item android:gravity="center" android:drawable="@drawable/ic_paynani_logo" />
+</layer-list>

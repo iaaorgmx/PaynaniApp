@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Paynani</string>
+    <string name="generic_title">Mensaje</string>
+    <string name="opt_logout">Emparejar de nuevo</string>
+    <string name="opt_dashboard">Acerca de</string>
+    <string name="logout_confirmation_msg">¿Emparejar este teléfono de nuevo? Se borra el emparejamiento actual y vas a necesitar un código nuevo de tu agente (por ejemplo, si cambió la dirección de paynani).</string>
+    <string name="btn_cancel">Cancelar</string>
+
+    <string name="about_p1">Paynani es software de código abierto. Forma parte de paynani y lo desarrolla Inteligencia Artificial Aplicada en México ONG (iaa.org.mx). Se distribuye bajo la licencia MIT.</string>
+
+
+
+
+
+
+    <string name="pair_title">Emparejar con paynani</string>
+    <string name="pair_help">Pídele a tu agente un código para emparejar este teléfono. Escanea el código QR que te muestre, o escribe la dirección y el código.</string>
+    <string name="pair_scan">Escanear código QR</string>
+    <string name="pair_scan_prompt">Apunta la cámara al código QR de emparejamiento de paynani</string>
+    <string name="pair_or_manual">O escríbelos:</string>
+    <string name="pair_address_hint">Dirección de la pasarela (https://…)</string>
+    <string name="pair_code_hint">Código de emparejamiento</string>
+    <string name="pair_button">Emparejar</string>
+    <string name="pair_working">Emparejando…</string>
+    <string name="pair_ok">Emparejado. Conectando con paynani…</string>
+    <string name="pair_bad_qr">Ese código QR no es de emparejamiento de paynani.</string>
+    <string name="pair_missing_code">Escribe el código de emparejamiento.</string>
+    <string name="pair_device_exists">paynani ya tiene otro teléfono emparejado. Pídele a tu agente que lo quite antes.</string>
+    <string name="pair_code_expired">El código venció o ya se usó. Pídele otro a tu agente.</string>
+    <string name="pair_blocked">Demasiados códigos equivocados. Pídele otro a tu agente.</string>
+    <string name="pair_failed">paynani respondió %1$d. Intenta de nuevo.</string>
+    <string name="pair_unreachable">No se pudo llegar a la pasarela. Revisa la dirección y el túnel.</string>
+    <string name="nav_device">Teléfono %1$s</string>
+    <string name="opt_status">Estado</string>
+    <string name="status_gateway">Pasarela</string>
+    <string name="status_connection">Conexión</string>
+    <string name="status_connected_since">Conectado desde %1$s</string>
+    <string name="status_last_connected">Sin conexión. La última conexión empezó el %1$s</string>
+    <string name="status_revoked">paynani lo revocó. Usa «Emparejar de nuevo».</string>
+    <string name="status_notifications">Notificaciones</string>
+    <string name="status_notifications_ok">Activadas: te avisamos cuando tu agente conteste</string>
+    <string name="status_notifications_off">Desactivadas: toca para activarlas y saber cuando tu agente conteste</string>
+    <string name="status_pair_again">¿Cambió la dirección de paynani? Emparejar de nuevo</string>
+    <string name="status_app_version">Paynani (app)</string>
+    <string name="status_app_version_value">%1$s (%2$d)</string>
+    <string name="status_server_version">paynani</string>
+    <string name="status_server_version_unknown">versión no informada (paynani 0.11.0 o anterior)</string>
+    <string name="status_server_version_unpaired">sin emparejar</string>
+
+    <string name="status_disconnected_since">Sin conexión desde %1$s</string>
+    <string name="status_never_connected">Todavía no se ha conectado</string>
+    <string name="pair_after_revoke">paynani quitó este teléfono y hay que emparejarlo de nuevo. Pídele a tu agente un código nuevo.</string>
+
+    <!-- Mensajes (#83) -->
+    <string name="msg_am">a.m.</string>
+    <string name="msg_pm">p.m.</string>
+
+    <!-- Estado (#113) -->
+    <string name="status_summary_ok">Todo funciona</string>
+    <string name="status_summary_ok_sub">Conectado con paynani</string>
+    <string name="status_summary_attention">Requiere atención</string>
+    <plurals name="status_summary_count">
+        <item quantity="one">%d cosa por revisar</item>
+        <item quantity="many">%d cosas por revisar</item>
+        <item quantity="other">%d cosas por revisar</item>
+    </plurals>
+    <string name="status_card_phone">Teléfono</string>
+    <string name="status_card_about">Acerca de</string>
+    <string name="status_chip_online">En línea</string>
+    <string name="status_chip_offline">Sin conexión</string>
+    <string name="status_chip_revoked">Revocado</string>
+    <string name="status_device_id">ID en paynani</string>
+    <string name="status_check_ok">Bien</string>
+    <string name="status_check_attention">Requiere atención</string>
+    <!-- Detalle del registro (#113) -->
+    <string name="nav_section_tools">Herramientas</string>
+    <string name="thread_send">Enviar</string>
+    <!-- Sin emparejar (#122) -->
+    <string name="opt_pair">Emparejar</string>
+    <string name="nav_unpaired">Sin emparejar</string>
+    <string name="status_unpaired_title">Sin emparejar</string>
+    <string name="status_unpaired_sub">Empareja este teléfono con paynani para platicar con tu agente.</string>
+    <string name="status_chip_unpaired">Sin emparejar</string>
+    <string name="status_unpaired_conn">Todavía no hay una pasarela emparejada.</string>
+    <!-- Instrucciones y reglas generales (paynani #409, R-6, R-7) -->
+    <string name="about_version_value">Versión %1$s</string>
+    <string name="about_version_copied">Versión copiada</string>
+    <string name="about_version_copy">Copiar la versión</string>
+    <string name="about_section_project">Proyecto</string>
+    <string name="about_section_help">Ayuda</string>
+    <string name="about_section_credits">Créditos</string>
+    <string name="about_web">Sitio web</string>
+    <string name="about_source">Código fuente</string>
+    <string name="about_license">Licencia</string>
+    <string name="about_license_detail">MIT. Úsala, cámbiala y compártela.</string>
+    <string name="about_report">Reportar un problema</string>
+    <string name="about_report_detail">Cuéntanos qué pasó, con esta versión</string>
+    <string name="about_news">Novedades</string>
+    <string name="about_news_detail">Los cambios de cada versión</string>
+    <string name="about_libraries">Bibliotecas de código abierto</string>
+    <string name="about_libraries_detail">AndroidX, Material Components, Room, OkHttp y ZXing. Licencia Apache 2.0.</string>
+    <string name="about_logo_font">Tipografía del logotipo</string>
+    <string name="about_logo_font_detail">Spectral, licencia SIL OFL 1.1</string>
+    <string name="about_icons">Íconos</string>
+    <string name="about_icons_detail">Material Symbols de Google, licencia Apache 2.0</string>
+    <string name="about_copyright">© 2026 Inteligencia Artificial Aplicada en México ONG</string>
+    <string name="about_no_browser">Ninguna app puede abrir este enlace.</string>
+
+    <string name="tg_retry">Reintentar</string>
+    <!-- Webchat (paynani PRD #653). -->
+    <string name="nav_section_agent">Agente de IA</string>
+    <string name="opt_webchat">Webchat</string>
+    <string name="wc_input_hint">Escríbele a tu agente</string>
+    <string name="wc_attach">Adjuntar fotos o archivos</string>
+    <string name="wc_remove">Quitar %1$s</string>
+    <string name="wc_empty">Todavía no hay mensajes. Lo que le escribas a tu agente también se ve en PaynaniWeb.</string>
+    <string name="wc_offline">Sin conexión con paynani. La conversación aparece cuando vuelva.</string>
+    <string name="wc_not_available">Webchat no está activo en paynani para este teléfono.</string>
+    <string name="wc_error_read">No se pudo leer la conversación (%1$s).</string>
+    <string name="wc_typing">%1$s está escribiendo…</string>
+    <string name="wc_agent_default">Tu agente</string>
+    <string name="wc_error_read_file">No se pudo leer %1$s.</string>
+    <string name="wc_error_too_big_file">%1$s pasa de 20 MB.</string>
+    <string name="wc_error_bad_type">%1$s no se puede mandar: sólo fotos (JPG, PNG, WebP o GIF), PDF, TXT, CSV, DOCX, XLSX o ZIP.</string>
+    <string name="wc_error_bad_type_any">paynani no aceptó un archivo: su contenido no coincide con su tipo.</string>
+    <string name="wc_error_empty">Escribe algo o adjunta un archivo.</string>
+    <string name="wc_error_too_long">El mensaje pasa de 4000 caracteres.</string>
+    <string name="wc_error_too_big">Los archivos juntos pasan de 25 MB.</string>
+    <string name="wc_error_too_many">Hasta %1$d archivos por mensaje.</string>
+    <string name="wc_error_bad_upload">Un archivo ya no estaba en paynani (vence a los 10 minutos). Vuelve a mandar y se sube otra vez.</string>
+    <string name="wc_error_rate_limited">Mandaste muchos mensajes seguidos. Espera un momento.</string>
+    <string name="wc_error_send">No se pudo mandar (%1$s). Lo que escribiste se queda para volver a intentar.</string>
+    <string name="wc_downloading">Descargando %1$s…</string>
+    <string name="wc_download">Descargar %1$s</string>
+    <string name="wc_no_app">No hay una app para abrir %1$s.</string>
+    <string name="wc_error_download">No se pudo descargar %1$s.</string>
+    <string name="wc_notification_channel">Webchat</string>
+    <string name="wc_notification_channel_desc">Cuando tu agente te contesta en Webchat</string>
+    <string name="wc_notification_title_default">Tu agente</string>
+    <string name="wc_notification_public">Tu agente te contestó</string>
+</resources>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Webchat (paynani PRD #653): el dueño platica con su agente, la misma conversación de PaynaniWeb. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ListView
+            android:id="@+id/wc_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:stackFromBottom="true"
+            android:transcriptMode="normal" />
+
+        <!-- Cargando, sin conexión (FR-10) o error con «Reintentar». -->
+        <LinearLayout
+            android:id="@+id/wc_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <ProgressBar
+                android:id="@+id/wc_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/wc_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:textColor="@color/paynani_gris"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/wc_retry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:minHeight="48dp"
+                android:text="@string/tg_retry"
+                android:visibility="gone" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- «<agente> escribiendo…» sin borrador todavía (Q325: con borrador se ve la burbuja). -->
+    <TextView
+        android:id="@+id/wc_typing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="4dp"
+        android:textColor="@color/paynani_gris"
+        android:textSize="13sp"
+        android:textStyle="italic"
+        android:visibility="gone" />
+
+    <!-- Los archivos elegidos, antes de mandar (FR-9): nombre y la × para quitarlos. -->
+    <HorizontalScrollView
+        android:id="@+id/wc_pending_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:scrollbars="none"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/wc_pending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:id="@+id/wc_compose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="6dp">
+
+        <ImageButton
+            android:id="@+id/wc_attach"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/wc_attach"
+            android:src="@drawable/ic_wc_attach" />
+
+        <EditText
+            android:id="@+id/wc_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/compose_bg"
+            android:hint="@string/wc_input_hint"
+            android:importantForAutofill="no"
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLength="4000"
+            android:maxLines="6"
+            android:minHeight="48dp"
+            android:paddingStart="16dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="12dp"
+            android:textColor="@color/paynani_tinta"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/wc_send"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/thread_send"
+            android:enabled="false"
+            android:src="@drawable/ic_ev_send" />
+    </LinearLayout>
+</LinearLayout>

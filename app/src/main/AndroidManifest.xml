@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Sólo Webchat con el agente (PaynaniApp-Agentic#175): sin SMS, llamadas, contactos ni
+         notificaciones de otras apps, y sin servicio en primer plano (Q342 = B). -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- El aviso de que el agente contestó (paynani PRD #653 FR-11). -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Sólo para escanear el QR de emparejamiento. -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <application
+        android:name=".GlobalInstance"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:allowBackup="false"
+        android:icon="@mipmap/launch_icon"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".DisplayErrorsActivity"
+            android:label="@string/app_name"/>
+
+        <activity
+            android:name=".SplashActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Main2Activity">
+        </activity>
+        <activity
+            android:name=".gateway.PairActivity"
+            android:label="@string/pair_title"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+
+        <!-- Webchat (paynani PRD #653): abrir con otra app un archivo descargado de la conversación. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.files"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/webchat_files" />
+        </provider>
+    </application>
+
+</manifest>

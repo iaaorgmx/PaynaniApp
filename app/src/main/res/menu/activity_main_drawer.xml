@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- El menú lateral, en secciones con título. Esta app sólo hace Webchat (PaynaniApp-Agentic#175). -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- «AI Agent» (paynani PRD #653), como en PaynaniWeb: sólo si la pasarela anuncia Webchat. -->
+    <item
+        android:id="@+id/nav_section_agent"
+        android:title="@string/nav_section_agent"
+        android:visible="false">
+        <menu>
+            <group
+                android:id="@+id/nav_group_agent"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_webchat"
+                    android:icon="@drawable/ic_menu_agent"
+                    android:title="@string/opt_webchat" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/nav_section_tools"
+        android:title="@string/nav_section_tools">
+        <menu>
+            <group
+                android:id="@+id/nav_group_tools"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_status"
+                    android:icon="@drawable/ic_menu_status"
+                    android:title="@string/opt_status" />
+                <item
+                    android:id="@+id/nav_logout"
+                    android:icon="@drawable/ic_menu_pair_again"
+                    android:title="@string/opt_logout" />
+                <item
+                    android:id="@+id/nav_home"
+                    android:icon="@drawable/ic_menu_about"
+                    android:title="@string/opt_dashboard" />
+            </group>
+        </menu>
+    </item>
+</menu>

@@ -1,0 +1,59 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+
+        <item name="colorButtonNormal">@color/colorbotones</item>
+        <item name="actionMenuTextColor">@color/colormenus</item>
+
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
+
+    </style>
+
+    <!-- Material3 con los colores de paynani (skill paynaniapp-views-xml). Por ahora solo
+         la pantalla Estado (#113): el resto de la app sigue en AppTheme hasta compararla. -->
+    <style name="Theme.Paynani.M3" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/paynani_grana</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorSurface">@android:color/white</item>
+        <item name="colorOnSurface">@color/paynani_tinta</item>
+        <item name="colorOnSurfaceVariant">@color/paynani_gris</item>
+        <item name="colorOutline">@color/status_border</item>
+        <item name="colorSecondaryContainer">@color/status_tile_bg</item>
+        <item name="colorOnSecondaryContainer">@color/paynani_grana</item>
+        <item name="android:colorBackground">@color/paynani_papel</item>
+    </style>
+
+
+    <!-- Título de cada grupo de «About» (#146), fuera de la tarjeta, como en Ajustes de Android. -->
+    <style name="Paynani.AboutSection" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:accessibilityHeading" tools:targetApi="p">true</item>
+        <item name="android:textAppearance">?attr/textAppearanceTitleSmall</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+</resources>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Una burbuja de Webchat (paynani PRD #653 FR-8): lo del dueño, a la derecha. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="right"
+    android:orientation="vertical"
+    android:paddingLeft="64dp"
+    android:paddingRight="12dp"
+    android:paddingTop="3dp"
+    android:paddingBottom="3dp">
+
+    <LinearLayout
+        android:id="@+id/wc_bubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bubble_out_owner"
+        android:orientation="vertical"
+        android:paddingLeft="12dp"
+        android:paddingTop="8dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/wc_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:textColor="@color/paynani_grana"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <!-- Las fotos se ven aquí; los demás archivos, como tarjeta para descargar. -->
+        <LinearLayout
+            android:id="@+id/wc_files"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/wc_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web|phone"
+            android:textColor="@color/paynani_tinta"
+            android:textColorLink="@color/paynani_tinta"
+            android:textIsSelectable="true"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/wc_meta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:textColor="@color/paynani_gris"
+        android:textSize="12sp" />
+</LinearLayout>

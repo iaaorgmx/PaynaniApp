@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Un archivo elegido que todavía no se manda (paynani PRD #653 FR-9): vista previa, nombre y ×. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="6dp"
+    android:background="@drawable/compose_bg"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="6dp"
+    android:paddingTop="4dp"
+    android:paddingEnd="2dp"
+    android:paddingBottom="4dp">
+
+    <ImageView
+        android:id="@+id/wc_pending_thumb"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/wc_pending_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:ellipsize="middle"
+        android:maxWidth="160dp"
+        android:singleLine="true"
+        android:textColor="@color/paynani_tinta"
+        android:textSize="13sp" />
+
+    <ImageButton
+        android:id="@+id/wc_pending_remove"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_wc_close" />
+</LinearLayout>
