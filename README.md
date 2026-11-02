@@ -16,3 +16,14 @@ cierras la app. Con la 0.21.0, la app rechaza cada envío en el acto. Los APK fi
 
 La versión completa, de uso interno, con la pasarela de SMS y llamadas, WhatsApp y Telegram, está
 en [iaaorgmx/PaynaniApp-Agentic](https://github.com/iaaorgmx/PaynaniApp-Agentic).
+
+## Versión de Android
+
+- `targetSdkVersion` y `compileSdkVersion` 36 (Android 16), lo que pide Google Play; `minSdkVersion` 26
+  (Android 8). Para compilar: Android Gradle Plugin 8.9.1 y Gradle 8.11.1, y la plataforma
+  `android-36` del SDK (#3).
+- Con la API 36, Android 16 dibuja la app de borde a borde siempre, sin opción de apagarlo: los
+  layouts usan `fitsSystemWindows` para que la barra de arriba y la caja de Webchat no queden bajo
+  las barras del sistema.
+- En tablets (600 dp de ancho o más), Android 16 ignora `screenOrientation="portrait"`: ahí la app
+  puede girar. En teléfonos se queda vertical.
