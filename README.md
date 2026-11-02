@@ -9,7 +9,9 @@ de ida y vuelta, «escribiendo…» y el borrador en vivo.
   agente contestó). Nada de SMS, llamadas ni contactos.
 - **Conexión:** mientras la app está abierta.
 
-Necesita paynani 0.21.0 o más nuevo. Los APK firmados están en
+Necesita paynani 0.21.0 o más nuevo. Desde la versión que sigue a la 0.21.0 (paynani #671),
+paynani sabe que este teléfono no hace SMS: no le manda envíos y no avisa que se desconectó cuando
+cierras la app. Con la 0.21.0, la app rechaza cada envío en el acto. Los APK firmados están en
 [Releases](https://github.com/iaaorgmx/PaynaniApp/releases/latest).
 
 La versión completa, de uso interno, con la pasarela de SMS y llamadas, WhatsApp y Telegram, está

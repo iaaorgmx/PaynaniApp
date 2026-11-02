@@ -260,6 +260,24 @@ public final class GatewayClient {
         }
     }
 
+    /** sms.status rejected de una orden (SMS_GATEWAY.md §4), con el id de estado sha256(order_id + "\n" + status). */
+    private void reject(String orderId) {
+        WebSocket ws = socket;
+        if (ws == null || orderId.isEmpty()) return;
+        try {
+            JSONObject m = new JSONObject();
+            m.put("type", "sms.status");
+            m.put("id", Protocol.statusId(orderId, "rejected"));
+            m.put("order_id", orderId);
+            m.put("status", "rejected");
+            m.put("at", Protocol.iso(System.currentTimeMillis()));
+            m.put("error", "no_sms");
+            ws.send(m.toString());
+        } catch (Exception e) {
+            L.e(TAG, "sms.status: " + e);
+        }
+    }
+
     private void revoked() {
         // El token ya no sirve: hay que volver a emparejar. Sin reintentos.
         markDropped();
@@ -301,12 +319,15 @@ public final class GatewayClient {
                 // paynani PRD #653 FR-6: a toda conexión con webchat.owner; con draft trae su texto.
                 WebchatEvents.changed(msg.optString("what"), GatewayWebchatSource.draftText(msg.opt("draft")));
                 break;
+            case "sms.out":
+                // Una pasarela anterior a paynani #671 no conoce "sms": false y puede mandar órdenes:
+                // se rechazan en el acto, para que no queden pendientes hasta vencer (Iris en #1).
+                reject(msg.optString("id"));
+                break;
             case "error":
                 L.e(TAG, "error de la pasarela: " + msg.optString("code"));
                 break;
             default:
-                // sms.out y lo demás de la pasarela de SMS: esta app no lo hace, y una pasarela
-                // que conoce "sms": false no lo manda.
                 break;
         }
     }
