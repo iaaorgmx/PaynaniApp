@@ -1,0 +1,11 @@
+<!-- Material Symbols (Outlined) de Google, licencia Apache 2.0: call_made. #65 -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="960"
+    android:viewportHeight="960"
+    android:autoMirrored="true">
+  <path
+      android:fillColor="@color/paynani_grana"
+      android:pathData="M216,800L160,744L624,280L360,280L360,200L760,200L760,600L680,600L680,336L216,800Z"/>
+</vector>

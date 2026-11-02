@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Paynani</string>
+    <string name="hello_world" translatable="false">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+
+    <!-- Example settings for Data & Sync -->
+
+    <!-- Example settings for Notifications -->
+
+    <string name="select_apps_youuse">Available channels</string>
+
+    <string name="permission_required">SMS service</string>
+
+    <string name="permission_listener">Receive SMS in real time</string>
+    <string name="permission_service">Inbox backup sweep</string>
+
+    <string name="generic_title">Message</string>
+    <string name="ok">OK</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="no_log_records_found">You have no Log records</string>
+    <string name="loading_dialog">Loading...</string>
+
+    <string name="label_today">Today</string>
+    <string name="label_yesterday">Yesterday</string>
+    <string name="label_format_date">MMM dd, yyyy</string>
+
+    <string name="label_switched_on">Delivered to paynani</string>
+    <string name="delivered_sms_from">SMS from %1$s</string>
+    <string name="delivered_missed_from">Missed call from %1$s</string>
+    <string name="delivered_answered_from">Answered call from %1$s</string>
+    <string name="delivered_outgoing_to">Outgoing call to %1$s</string>
+
+    <string name="label_autoreply">SMS sent</string>
+    <string name="default_response_sent_to">Sent to %1$s</string>
+
+    <string name="label_incoming_sms">SMS received</string>
+    <string name="text_message_received_from">From %1$s</string>
+
+    <string name="smsgateway_desc_label">Text messages</string>
+    <string name="opt_eventlog">Event log</string>
+    <string name="opt_logout">Pair again</string>
+    <string name="opt_dashboard">About</string>
+    <string name="logout_confirmation_msg">Pair this phone again? The current pairing is removed and you will need a new code from \"paynani sms pair\" (for example, if paynani\'s address changed).</string>
+    <string name="btn_cancel">Cancel</string>
+
+    <string name="about_p1">Paynani is open source software. It is part of paynani and is developed by Inteligencia Artificial Aplicada en México ONG (iaa.org.mx). It is distributed under the MIT license.</string>
+
+    <string name="lbl_from">From</string>
+    <string name="lbl_date">Date</string>
+
+    <string name="label_incoming_answered_call">Answered call</string>
+    <string name="call_answered_received_from">From %1$s</string>
+
+    <string name="label_incoming_notanswered_call">Missed call</string>
+    <string name="call_notanswered_received_from">From %1$s</string>
+
+    <string name="label_outgoing_call">Outgoing call</string>
+    <string name="call_outgoing_call_to">To %1$s</string>
+
+    <string name="restar_service">Paynani needs to restart to apply the changes</string>
+    <string name="total_msjs">SMS queued for paynani:</string>
+
+    <string name="pair_title">Pair with paynani</string>
+    <string name="pair_help">On the agent\'s computer run «paynani sms pair». Scan the QR code it shows, or type the address and the code.</string>
+    <string name="pair_scan">Scan QR code</string>
+    <string name="pair_scan_prompt">Point the camera at the paynani pairing QR code</string>
+    <string name="pair_or_manual">Or type them:</string>
+    <string name="pair_address_hint">Gateway address (https://…)</string>
+    <string name="pair_code_hint">Pairing code</string>
+    <string name="pair_button">Pair</string>
+    <string name="pair_working">Pairing…</string>
+    <string name="pair_ok">Paired. Connecting to paynani…</string>
+    <string name="pair_bad_qr">That QR code is not a paynani pairing code.</string>
+    <string name="pair_missing_code">Type the pairing code.</string>
+    <string name="pair_device_exists">paynani already has a phone paired. Revoke it with «paynani sms revoke» first.</string>
+    <string name="pair_code_expired">The code expired or was already used. Ask for a new one with «paynani sms pair».</string>
+    <string name="pair_blocked">Too many wrong codes. Generate a new one with «paynani sms pair».</string>
+    <string name="pair_failed">paynani answered %1$d. Try again.</string>
+    <string name="pair_unreachable">Could not reach the gateway. Check the address and the tunnel.</string>
+    <string name="gateway_state_connected">Connected to paynani</string>
+    <string name="gateway_state_disconnected">Not connected to paynani. Retrying…</string>
+    <string name="gateway_state_revoked">paynani revoked this phone. Open the app to pair it again.</string>
+    <string name="gateway_state_unpaired">Not paired. Open the app to pair with paynani.</string>
+    <string name="nav_device">Phone %1$s</string>
+    <string name="permissions_missing">Paynani is missing permissions to receive and send SMS and to see calls. Without them nothing reaches paynani. Grant them now?</string>
+    <string name="perm_title">Permissions</string>
+    <string name="perm_intro">Paynani passes your SMS and calls to your paynani agent and sends its replies. Nothing else leaves the phone. It needs:</string>
+    <string name="perm_sms">SMS: receive messages, read the inbox to recover any the app missed, and send the agent\'s replies.</string>
+    <string name="perm_phone">Phone: detect incoming calls and know which SIM a message arrived on.</string>
+    <string name="perm_call_log">Call log: see the number of a missed or answered call.</string>
+    <string name="perm_notifications">Notifications: show whether the phone is connected to paynani.</string>
+    <string name="perm_battery">Battery: run without battery optimization, so Android does not cut the connection to paynani.</string>
+    <string name="perm_rcs">Turn off RCS chats in Google Messages: messages that arrive over RCS do not travel as SMS, so Paynani cannot see them. Status tells you if this is pending.</string>
+    <string name="perm_continue">Continue</string>
+    <string name="perm_name_sms">SMS</string>
+    <string name="perm_name_phone">Phone</string>
+    <string name="perm_name_call_log">Call log</string>
+    <string name="perm_name_notifications">Notifications</string>
+    <string name="opt_status">Status</string>
+    <string name="status_gateway">Gateway</string>
+    <string name="status_connection">Connection</string>
+    <string name="status_connected_since">Connected since %1$s</string>
+    <string name="status_last_connected">Not connected. The last connection started %1$s</string>
+    <string name="status_revoked">Revoked by paynani. Use Pair again.</string>
+    <string name="status_queue">In queue, not yet confirmed by paynani</string>
+    <string name="status_queue_value">%1$s, %2$s</string>
+    <plurals name="status_queue_inbound">
+        <item quantity="one">%d message or call</item>
+        <item quantity="other">%d messages and calls</item>
+    </plurals>
+    <plurals name="status_queue_statuses">
+        <item quantity="one">%d send status</item>
+        <item quantity="other">%d send statuses</item>
+    </plurals>
+    <string name="status_sent_hour">SMS sent in the last hour</string>
+    <string name="status_sent_hour_value">%1$d of %2$d allowed</string>
+    <string name="status_permissions">Permissions</string>
+    <string name="status_permissions_ok">All granted</string>
+    <string name="status_permissions_missing">Missing: %1$s</string>
+    <string name="status_device_battery">Battery</string>
+    <string name="status_device_battery_unknown">no reading</string>
+    <string name="status_device_battery_update">paynani does not receive it yet: update it to get the low battery alerts</string>
+    <string name="status_battery">Battery optimization</string>
+    <string name="status_battery_ok">Off for Paynani</string>
+    <string name="status_battery_on">On: Android may cut the connection</string>
+    <string name="status_pair_again">Did paynani\'s address change? Pair again</string>
+    <string name="status_fix">Fix permissions</string>
+    <string name="status_rcs">RCS chats</string>
+    <string name="status_rcs_ok">Off (you confirmed it)</string>
+    <string name="status_rcs_pending">Pending: turn off RCS chats in Google Messages. Tap here to see how.</string>
+    <string name="rcs_guide_title">Turn off RCS chats</string>
+    <string name="rcs_guide_steps">Messages that arrive over RCS travel over data inside Google Messages, never as SMS, so Paynani cannot see them.\n\n1. Open Google Messages.\n2. Tap your profile picture, then Messages settings.\n3. Tap RCS chats and turn off \"Turn on RCS chats\".\n\nIf this number used RCS before, also deregister it at messages.google.com/disable-chat.\n\nGoogle warns that turning off RCS takes you out of RCS group chats.\n\nDo not leave a conversation open in Google Messages on the gateway phone: with the conversation open, Android does not announce the message and Paynani cannot detect an RCS.</string>
+    <string name="rcs_guide_open">Open Google Messages</string>
+    <string name="rcs_guide_done">I turned them off</string>
+    <string name="rcs_guide_later">Later</string>
+    <string name="status_rcs_detector">RCS detector</string>
+    <string name="status_rcs_detector_on">Active</string>
+    <string name="status_rcs_detector_off">Cannot detect whether RCS messages arrive. Tap here to turn it on.</string>
+    <string name="status_rcs_detector_update">Update paynani to use the detector</string>
+    <string name="status_app_version">Paynani (app)</string>
+    <string name="status_app_version_value">%1$s (%2$d)</string>
+    <string name="notification_channel_name">Connection to paynani</string>
+    <string name="status_server_version">paynani</string>
+    <string name="status_server_version_unknown">version not reported (paynani 0.11.0 or earlier)</string>
+    <string name="status_server_version_unpaired">not paired</string>
+    <string name="rcs_detector_guide_title">Notification access</string>
+    <string name="rcs_detector_guide">With notification access, Paynani notices when Google Messages shows a message that never arrived as SMS (usually RCS) and tells paynani. It only reads who the message is from, never its text.\n\nIn the next screen, turn on Paynani.</string>
+    <string name="rcs_detector_guide_restricted">With notification access, Paynani notices when Google Messages shows a message that never arrived as SMS (usually RCS) and tells paynani. It only reads who the message is from, never its text.\n\nIn the next screen, turn on Paynani. If Android says it is a restricted setting, go to Settings, Apps, Paynani, tap the ⋮ menu, choose \"Allow restricted settings\" and try again.</string>
+    <string name="rcs_detector_guide_open">Open settings</string>
+    <string name="label_gateway_rejected">Rejected by paynani</string>
+    <string name="label_gateway_revoked">paynani revoked this phone</string>
+    <string name="log_gateway_revoked_detail">It has to be paired again</string>
+    <string name="label_rcs_unseen">Message the app could not read (possible RCS)</string>
+    <string name="text_rcs_unseen_from">Google Messages showed a message from %1$s</string>
+    <string name="channels_sms" translatable="false">SMS</string>
+    <string name="sim_title">Gateway SIM</string>
+    <string name="sim_help">Which SIM paynani uses to receive and send. With one chosen, SMS and calls on the other SIM stay on the phone.</string>
+    <string name="sim_all">All SIMs</string>
+    <string name="sim_item">SIM %1$d · %2$s · %3$s</string>
+    <string name="sim_unknown_number">number unknown</string>
+    <string name="sim_number_hint">Number of this SIM (+52…)</string>
+    <string name="sim_number_help">Android does not know this SIM\'s number. Type it so paynani knows which number it answers from.</string>
+    <string name="sim_number_save">Save number</string>
+    <string name="sim_number_bad">That is not a phone number. Write it with the country code, for example +525511112222.</string>
+    <string name="sim_saved">Saved. Telling paynani…</string>
+    <string name="sim_none">Android does not show any SIM. Check the Phone permission.</string>
+
+    <string name="sms_service_interval">How often the inbox is checked</string>
+    <string name="status_last">Last delivered</string>
+    <string name="status_last_sms">%1$s, SMS from %2$s</string>
+    <string name="status_last_call">%1$s, call from %2$s</string>
+    <string name="status_last_none">nothing yet</string>
+    <string name="status_hidden">hidden number</string>
+    <string name="status_disconnected_since">Not connected since %1$s</string>
+    <string name="status_never_connected">Not connected yet</string>
+    <string name="pair_after_revoke">paynani revoked this phone, so it has to be paired again. On the agent\'s computer run «paynani sms pair» for a new code.</string>
+
+    <!-- Mensajes (#83) -->
+    <string name="opt_messages">Text Messages</string>
+    <string name="msg_rcs_note">RCS chats and MMS are not shown here.</string>
+    <string name="msg_empty">No text messages on this phone.</string>
+    <string name="msg_loading">Loading messages…</string>
+    <string name="msg_load_failed">Couldn\'t read the messages.</string>
+    <string name="msg_retry">Retry</string>
+    <string name="msg_no_permission">Paynani can\'t read SMS. Grant the SMS permission to see messages.</string>
+    <string name="msg_you_prefix">You: %1$s</string>
+    <string name="msg_yesterday">Yesterday</string>
+    <string name="msg_am">AM</string>
+    <string name="msg_pm">PM</string>
+    <string name="msg_status_sent">Sent</string>
+    <string name="msg_status_delivered">Delivered</string>
+    <string name="msg_status_sending">Sending…</string>
+    <string name="msg_status_failed">Not sent</string>
+    <string name="msg_sim">SIM %1$d</string>
+    <string name="msg_from_web">from PaynaniWeb</string>
+    <string name="msg_from_api">API</string>
+
+    <!-- Background (#86) -->
+    <string name="perm_background">Background: this phone has %1$s, which closes apps running in the background. We\'ll take you to its screen to allow Paynani.</string>
+    <string name="bg_guide_title">Allow in background</string>
+    <string name="bg_guide_steps">This phone has %1$s, which closes apps running in the background, and Paynani stops receiving and sending SMS until someone opens it.\n\nOpen its screen and turn on (or allow) Paynani. If it isn\'t listed as «Paynani», look for «PaynaniApp».</string>
+    <string name="bg_guide_steps_samsung">Samsung can put Paynani to sleep, and then it stops receiving and sending SMS until someone opens it.\n\n1. «Open settings» takes you to Paynani\'s screen: in Battery, choose «Unrestricted».\n2. Settings, Battery, Background usage limits, «Never sleeping apps»: tap + and add Paynani.\n\nDo not add it to «Sleeping apps» or «Deep sleeping apps»: those lists put it to sleep.</string>
+    <string name="bg_guide_open">Open settings</string>
+    <string name="bg_guide_done">I allowed it</string>
+    <string name="bg_guide_later">Later</string>
+    <string name="bg_confirm">Did you allow Paynani in %1$s?</string>
+    <string name="bg_confirm_not_yet">Not yet</string>
+    <string name="status_background">Background</string>
+    <string name="status_background_ok">Paynani allowed</string>
+    <string name="status_background_pending">Pending: allow Paynani in %1$s. Tap here to see how.</string>
+    <!-- Estado (#113) -->
+    <string name="status_summary_ok">Everything works</string>
+    <string name="status_summary_ok_sub">SMS and calls reach paynani</string>
+    <string name="status_summary_attention">Needs attention</string>
+    <plurals name="status_summary_count">
+        <item quantity="one">%d thing to check</item>
+        <item quantity="other">%d things to check</item>
+    </plurals>
+    <string name="status_card_messages">Today\'s messages</string>
+    <string name="status_card_phone">Phone</string>
+    <string name="status_card_about">About</string>
+    <string name="status_chip_online">Online</string>
+    <string name="status_chip_offline">Offline</string>
+    <string name="status_chip_revoked">Revoked</string>
+    <string name="status_tile_sms">SMS</string>
+    <string name="status_tile_calls">calls</string>
+    <string name="status_tile_queue">queued</string>
+    <string name="status_battery_pct">Battery %1$d %%</string>
+    <string name="status_battery_charging">charging</string>
+    <string name="status_battery_discharging">not charging</string>
+    <string name="status_device_id">ID in paynani</string>
+    <string name="status_check_ok">OK</string>
+    <string name="status_check_attention">Needs attention</string>
+    <!-- Detalle del registro (#113) -->
+    <string name="lbl_to">To</string>
+    <string name="ev_detail_open">Open conversation</string>
+    <string name="ev_detail_copy">Copy</string>
+    <string name="ev_detail_copied">Copied</string>
+    <string name="ev_detail_no_conversation">There is no conversation with this number in Text Messages.</string>
+    <!-- Ajustes y SMS del dueño (PaynaniApp#111) -->
+    <string name="opt_settings">Settings</string>
+    <string name="nav_section_management">Management</string>
+    <string name="nav_section_tools">Tools</string>
+    <string name="settings_pause_title">Agent pause after you reply</string>
+    <string name="settings_pause_explain">When you reply to someone from Text Messages, the agent does not text that number for these minutes, unless you ask it to.</string>
+    <string name="settings_pause_hint">Pause</string>
+    <string name="settings_pause_suffix">min</string>
+    <string name="settings_pause_helper">0 means no pause. Default 30.</string>
+    <string name="settings_pause_error">From 0 to %1$d minutes</string>
+    <string name="msg_new">New message</string>
+    <string name="msg_new_number_hint">Phone number</string>
+    <string name="msg_new_write">Write</string>
+    <string name="msg_new_pick">Contacts</string>
+    <string name="thread_input_hint">Text message</string>
+    <string name="thread_open_contact">Open contact</string>
+    <string name="thread_no_contacts_app">No contacts app can open this.</string>
+    <string name="thread_roster_add">Add to Roster</string>
+    <string name="thread_roster_edit">Edit in Roster</string>
+    <string name="thread_roster_choose_account">Add to which account?</string>
+    <string name="thread_roster_choose_member">Which contact?</string>
+    <string name="thread_send">Send</string>
+    <string name="thread_counter">%1$d SMS</string>
+    <string name="thread_send_error">Not sent: %1$s</string>
+    <string name="thread_not_received">paynani does not receive your replies yet: update it. The text is still sent.</string>
+    <string name="thread_failed_retry">Not sent · Retry</string>
+    <string name="thread_retry">Retry</string>
+    <string name="thread_retry_text">Send this message again?</string>
+    <!-- Sin emparejar (#122) -->
+    <string name="opt_pair">Pair</string>
+    <string name="nav_unpaired">Not paired</string>
+    <string name="status_unpaired_title">Not paired</string>
+    <string name="status_unpaired_sub">Pair this phone with your paynani gateway so texts and calls reach it.</string>
+    <string name="status_chip_unpaired">Not paired</string>
+    <string name="status_unpaired_conn">There is no paired gateway yet.</string>
+    <string name="log_unpaired">Pair the phone to see here what reaches paynani.</string>
+    <string name="thread_not_paired">Not paired: paynani does not receive your replies. The text is still sent.</string>
+    <!-- Samsung por versión de Android (#124) -->
+    <string name="bg_guide_steps_samsung_9">Samsung can put Paynani to sleep, and then it stops receiving and sending SMS until someone opens it.\n\n1. «Open settings» takes you to Paynani\'s screen. In Battery, «Allow background activity» must be On, and «Optimize battery usage» must say «Not optimized».\n2. Settings, Device maintenance, Battery, ⋮, Settings: make sure Paynani is not in «Sleeping apps» or «Disabled apps». If it is there, remove it.\n\nIf Samsung keeps putting it there, turn off «Put unused apps to sleep» and «Auto disable unused apps» on that same screen.</string>
+    <string name="bg_guide_steps_samsung_10">Samsung can put Paynani to sleep, and then it stops receiving and sending SMS until someone opens it.\n\n1. «Open settings» takes you to Paynani\'s screen. In Battery, «Allow background activity» must be On.\n2. Settings, Device care, Battery, App power management, «Apps that won\'t be put to sleep»: tap Add and choose Paynani.\n\nDo not add it to «Sleeping apps»: that list puts it to sleep.</string>
+    <!-- Roster (paynani #409, R-1 a R-5) -->
+    <string name="opt_roster">Roster</string>
+    <string name="roster_account">Account</string>
+    <string name="roster_account_primary">%1$s (agent)</string>
+    <string name="roster_account_unreadable">%1$s (unreadable)</string>
+    <string name="roster_offline">No connection with paynani: the roster can\'t be edited until the gateway is connected.</string>
+    <string name="roster_empty">This roster has no contacts yet.</string>
+    <string name="roster_error_load">Couldn\'t read the roster (%1$s).</string>
+    <string name="roster_error_load_offline">Couldn\'t reach paynani to read the roster.</string>
+    <string name="roster_add">Add</string>
+    <string name="roster_owner">Owner</string>
+    <string name="roster_type_human">Human</string>
+    <string name="roster_type_agent">AI Agent</string>
+    <string name="roster_no_channel">No email, phone or Telegram</string>
+    <string name="roster_edit_title_new">New contact</string>
+    <string name="roster_edit_title">Edit contact</string>
+    <string name="roster_rules_save_first">Save the contact first</string>
+    <string name="roster_read_only">This account\'s roster can\'t be edited from the app right now.</string>
+    <string name="roster_chevron" translatable="false">›</string>
+    <string name="roster_field_name">Name</string>
+    <string name="roster_field_email">Email</string>
+    <string name="roster_field_phones">Phones</string>
+    <string name="roster_field_phones_help">In international format, e.g. +525512345678. Separate several with commas.</string>
+    <string name="roster_field_github">GitHub user</string>
+    <string name="roster_field_type">Type</string>
+    <string name="roster_field_no_column">This roster has no %1$s column.</string>
+    <string name="roster_save">Save</string>
+    <string name="roster_saving">Saving…</string>
+    <string name="roster_saved">Saved in paynani.</string>
+    <string name="roster_delete">Remove</string>
+    <string name="roster_delete_title">Remove %1$s?</string>
+    <string name="roster_delete_message">paynani will stop reading and answering this contact\'s messages. A dated copy of the roster is kept.</string>
+    <string name="roster_deleted">Removed from the roster.</string>
+    <string name="roster_cancel">Cancel</string>
+    <string name="roster_owner_locked">The owner\'s row can\'t be removed, and it stays Human.</string>
+    <string name="roster_err_required">Write a name, without | or line breaks.</string>
+    <string name="roster_err_email_format">That isn\'t a valid email.</string>
+    <string name="roster_err_phone_e164">Use international format: + and the country code, e.g. +525512345678.</string>
+    <string name="roster_err_no_channel">Write an email, a phone or a Telegram username.</string>
+    <string name="roster_err_duplicate_email">Another contact in this roster has that email.</string>
+    <string name="roster_err_duplicate_phone">Another contact in this roster has that phone.</string>
+    <string name="roster_err_github">That isn\'t a valid GitHub user.</string>
+    <string name="roster_card_telegram">Telegram %1$s</string>
+    <string name="roster_card_telegram_id">Telegram (in PaynaniWeb)</string>
+    <string name="roster_field_telegram">Telegram username</string>
+    <string name="roster_field_telegram_help">@username, as shown in Telegram.</string>
+    <string name="roster_err_reopen">The roster changed and this contact can\'t be found from the app (it has no email, phone or @username). Nothing was saved: open it again from the list.</string>
+    <string name="roster_field_telegram_id">Set up in PaynaniWeb.</string>
+    <string name="roster_err_telegram">That isn\'t a valid Telegram username: 5 to 32 letters, digits or _, starting with a letter.</string>
+    <string name="roster_err_telegram_username_only">The app only saves a @username. The Telegram id is added in PaynaniWeb.</string>
+    <string name="roster_err_duplicate_telegram">Another contact already has that Telegram username.</string>
+    <string name="roster_err_owner_type">The owner\'s row must stay Human.</string>
+    <string name="roster_err_conflict">The roster changed in paynani in the meantime. It was reloaded: check it and try again.</string>
+    <string name="roster_err_offline">No connection with paynani. Nothing was saved.</string>
+    <string name="roster_err_timeout">paynani didn\'t answer. Nothing is shown as saved; the roster was reloaded.</string>
+    <string name="roster_err_write_failed">paynani couldn\'t write the roster and left it as it was.</string>
+    <string name="roster_err_other">paynani rejected the change (%1$s).</string>
+    <!-- Instrucciones y reglas generales (paynani #409, R-6, R-7) -->
+    <string name="rules_title">Instructions</string>
+    <string name="rules_default_title">General rules</string>
+    <string name="rules_default_subtitle">For every contact without their own instructions</string>
+    <string name="rules_open">Instructions</string>
+    <string name="rules_member_none">No instructions of their own: the general rules apply</string>
+    <string name="rules_member_on">Has their own instructions</string>
+    <string name="rules_member_off">Their instructions are turned off: the general rules apply</string>
+    <string name="rules_note_new">This contact has no instructions of their own yet. Until you save, the general rules apply.</string>
+    <string name="rules_note_default">They apply to every contact in every account. A contact\'s section with the same name (for example «## SMS») replaces the general one.</string>
+    <string name="rules_enabled">Instructions on</string>
+    <string name="rules_reply_title">Replies</string>
+    <string name="rules_reply_email">Email</string>
+    <string name="rules_reply_sms">SMS</string>
+    <string name="rules_reply_normal">Normal</string>
+    <string name="rules_reply_never">Never reply</string>
+    <string name="rules_body_title">What the agent does with their messages</string>
+    <string name="rules_body_help">Markdown. «## General» applies to every channel; «## Correo» and «## SMS» take precedence for that channel.</string>
+    <string name="rules_size">%1$s of 32 KB</string>
+    <string name="rules_preview">Preview</string>
+    <string name="rules_preview_title">What the agent will follow</string>
+    <string name="rules_preview_empty">No rules apply: the agent does as it does today.</string>
+    <string name="rules_saved">Instructions saved in paynani.</string>
+    <string name="rules_unsaved_title">Discard the changes?</string>
+    <string name="rules_unsaved_message">What you wrote hasn\'t been saved in paynani.</string>
+    <string name="rules_discard">Discard</string>
+    <string name="rules_err_too_large">They\'re over 32 KB. Shorten them, or move the long procedures to a skill and point to it.</string>
+    <string name="rules_err_wrong_contact">That row is now another contact in paynani. Open the contact again from the list.</string>
+    <string name="rules_err_conflict">The instructions changed in paynani in the meantime. The new version is loaded: check it, or recover yours and save again.</string>
+    <string name="rules_err_header">paynani rejected the header (%1$s).</string>
+    <string name="rules_recover">Recover my version</string>
+    <string name="rules_err_contact_gone">That contact is no longer in the roster in paynani.</string>
+    <string name="about_version_value">Version %1$s</string>
+    <string name="about_version_copied">Version copied</string>
+    <string name="about_version_copy">Copy version</string>
+    <string name="about_section_project">Project</string>
+    <string name="about_section_help">Help</string>
+    <string name="about_section_credits">Credits</string>
+    <string name="about_web">Website</string>
+    <string name="about_web_detail" translatable="false">iaa.org.mx</string>
+    <string name="about_source">Source code</string>
+    <string name="about_source_detail" translatable="false">github.com/iaaorgmx/PaynaniApp</string>
+    <string name="about_license">License</string>
+    <string name="about_license_detail">MIT. Use it, change it and share it.</string>
+    <string name="about_report">Report a problem</string>
+    <string name="about_report_detail">Tell us what happened, with this version</string>
+    <string name="about_news">What\'s new</string>
+    <string name="about_news_detail">Changes in each version</string>
+    <string name="about_libraries">Open source libraries</string>
+    <string name="about_libraries_detail">AndroidX, Material Components, Room, OkHttp and ZXing. Apache 2.0 license.</string>
+    <string name="about_logo_font">Logo typeface</string>
+    <string name="about_logo_font_detail">Spectral, SIL OFL 1.1 license</string>
+    <string name="about_icons">Icons</string>
+    <string name="about_icons_detail">Material Symbols by Google, Apache 2.0 license</string>
+    <string name="about_copyright">© 2026 Inteligencia Artificial Aplicada en México ONG</string>
+    <string name="about_no_browser">No app can open this link.</string>
+    <!-- Catch-All de SMS (paynani PRD #535, FR-A1 a FR-A4). -->
+    <string name="catchall_title">Catch-All</string>
+    <string name="catchall_row">Catch-All: messages from numbers outside the roster</string>
+    <string name="catchall_explain">With a channel\'s Catch-All on, that channel\'s messages from people who are not on the roster reach your agent with their text. The agent follows only those instructions and never replies to them.\n\nVerification codes (WhatsApp, Telegram, banks) will reach the agent too. Your instructions can tell it to ignore them.</string>
+    <string name="catchall_enabled">Turn on the Catch-All</string>
+    <string name="catchall_body_title">Instructions for the agent</string>
+    <string name="catchall_body_hint">For example: tell me on Telegram who wrote and what they said.</string>
+    <string name="catchall_status_never">Never set up. It\'s off.</string>
+    <string name="catchall_status_on">On</string>
+    <string name="catchall_status_off">Off</string>
+    <string name="catchall_status_invalid">The file is broken; the agent ignores it</string>
+    <string name="catchall_status_changed">%1$s. Last changed %2$s by %3$s.</string>
+    <string name="catchall_err_empty">To turn it on, write the instructions for the agent.</string>
+    <string name="catchall_err_conflict">Someone else changed the Catch-All. This is the current version; your changes were not saved.</string>
+    <string name="catchall_err_reserved">A roster contact uses a rules name reserved for the Catch-All (catch-all, catch-all-sms, catch-all-whatsapp or catch-all-telegram). Rename those rules first.</string>
+    <string name="catchall_err_invalid_file">%1$s has a broken header. Saving here writes it again, fixed.</string>
+    <string name="catchall_saved_on">Saved. The %1$s Catch-All is on.</string>
+    <string name="catchall_saved_off">Saved. The %1$s Catch-All is off.</string>
+    <string name="catchall_channel_sms">SMS</string>
+    <string name="catchall_channel_whatsapp">WhatsApp</string>
+    <string name="catchall_channel_telegram">Telegram</string>
+    <string name="catchall_scope_sms">Opens SMS from numbers outside the roster.</string>
+    <string name="catchall_scope_whatsapp">Opens WhatsApp messages from numbers outside the roster.</string>
+    <string name="catchall_scope_telegram">Opens Telegram messages from people outside the roster. It does not use rules/catch-all.md, the old file: it stays off until you set it up here.</string>
+    <string name="catchall_scope_both">This gateway has a single Catch-All: it applies to SMS and WhatsApp. Update paynani to set each channel separately.</string>
+    <string name="catchall_elsewhere">The %1$s Catch-All is in «%2$s».</string>
+    <string name="catchall_err_no_telegram">This gateway has no Telegram Catch-All. Update paynani to set it up from here.</string>
+    <string name="tg_catchall_row">Catch-All: messages from people outside the roster</string>
+    <string name="catchall_legacy">This channel still uses rules/catch-all.md, the old file shared by SMS and WhatsApp (Telegram does not use it). Saving here gives each one its own file and leaves the other as it is.</string>
+
+    <!-- WhatsApp (paynani PRD #550, SMS_GATEWAY.md §12). -->
+    <string name="opt_whatsapp_messages">WhatsApp messages</string>
+    <string name="wa_title">WhatsApp</string>
+    <string name="wa_offline">No connection with paynani. WhatsApp shows up again when the gateway connects.</string>
+    <string name="wa_state_connected">Linked</string>
+    <string name="wa_state_reconnecting">Linked, reconnecting to WhatsApp…</string>
+    <string name="wa_state_linking">Linking in progress</string>
+    <string name="wa_state_not_linked">Not linked</string>
+    <string name="wa_state_service_down">The WhatsApp service is not running on the host</string>
+    <string name="wa_detail_me">Number %1$s</string>
+    <string name="wa_detail_linking">Started from %1$s. The code expires in %2$s.</string>
+    <string name="wa_by_phone">this phone</string>
+    <string name="wa_by_web">PaynaniWeb</string>
+    <string name="wa_by_terminal">the terminal</string>
+    <string name="wa_no_admin">Only the phone paired with this installation can link or unlink WhatsApp.</string>
+    <string name="wa_link_title">Link with a code</string>
+    <string name="wa_link_steps">1. Request the code and copy it.\n2. Open WhatsApp on the phone with this number.\n3. Go to Linked devices → Link a device → Link with phone number instead.\n4. Paste the code. It works only once and expires in a few minutes.</string>
+    <string name="wa_number">WhatsApp number</string>
+    <string name="wa_number_help">International format, for example +12105550100.</string>
+    <string name="wa_request">Request code</string>
+    <string name="wa_request_again">Request a new code</string>
+    <string name="wa_copy">Copy code</string>
+    <string name="wa_copied">Code copied</string>
+    <string name="wa_countdown">Expires in %1$s</string>
+    <string name="wa_expired">The code expired. Request a new one.</string>
+    <string name="wa_cancel">Cancel linking</string>
+    <string name="wa_cancelled">Linking cancelled</string>
+    <string name="wa_unlink">Unlink</string>
+    <string name="wa_unlink_title">Unlink WhatsApp?</string>
+    <string name="wa_unlink_message">The agent stops receiving and sending WhatsApp messages with this number until you link it again.</string>
+    <string name="wa_unlinked">WhatsApp unlinked. Check WhatsApp → Linked devices on this phone; if the device is still there, log it out.</string>
+    <string name="wa_unlinked_manual">Unlinked here, but WhatsApp did not answer: remove the device in WhatsApp → Linked devices.</string>
+    <string name="wa_error_forbidden">This phone cannot link or unlink WhatsApp.</string>
+    <string name="wa_error_already_linked">WhatsApp is already linked.</string>
+    <string name="wa_error_conflict">That code was already shown. Request a new one.</string>
+    <string name="wa_error_unavailable">WhatsApp is not available on paynani right now.</string>
+    <string name="wa_error_number">Type the number in international format.</string>
+    <string name="wa_error_generic">Something went wrong (%1$s).</string>
+    <string name="wa_error_offline">Could not reach paynani.</string>
+    <string name="wa_retry">Retry</string>
+    <string name="wa_threads_empty">No WhatsApp conversations yet. They show up here when a contact writes first.</string>
+    <string name="wa_threads_offline">No connection with paynani.</string>
+    <string name="wa_threads_error">Could not read the conversations (%1$s).</string>
+    <string name="wa_hidden">Message from a number outside the roster</string>
+    <string name="wa_out_prefix">"You: "</string>
+    <string name="wa_media_image">[photo]</string>
+    <string name="wa_media_audio">[audio]</string>
+    <string name="wa_media_video">[video]</string>
+    <string name="wa_media_document">[document]</string>
+    <string name="wa_media_sticker">[sticker]</string>
+    <string name="wa_media_other">[file]</string>
+    <string name="wa_cannot_reply">You can only reply here once this contact writes on WhatsApp.</string>
+    <string name="wa_cannot_reply_roster">This number is not on the roster: you can\'t reply from here.</string>
+    <string name="wa_input_hint">WhatsApp message</string>
+    <string name="wa_send">Send</string>
+    <string name="wa_sending">Sending…</string>
+    <string name="wa_failed">Not sent</string>
+    <string name="wa_error_not_allowed">This number is not in the roster.</string>
+    <string name="wa_error_not_started">This contact has not written on WhatsApp yet.</string>
+    <string name="wa_error_rate_limited">Too many messages. Try again in %1$d s.</string>
+    <string name="wa_error_not_connected">WhatsApp is not connected.</string>
+    <!-- Telegram (paynani PRD #609 FR-29a, TELEGRAM.md §6) -->
+    <string name="opt_telegram_messages">Telegram messages</string>
+    <string name="tg_retry">Retry</string>
+    <string name="tg_threads_empty">No Telegram conversations yet. They show up when someone writes to the bot.</string>
+    <string name="tg_threads_not_configured">Telegram is not set up in paynani. Conversations show up once the bot is configured.</string>
+    <string name="tg_threads_offline">No connection with paynani. Telegram conversations show up when it is back.</string>
+    <string name="tg_threads_error">Could not read the conversations (%1$s).</string>
+    <string name="tg_hidden">Message from someone outside the roster</string>
+    <string name="tg_unknown_person">Someone outside the roster</string>
+    <string name="tg_out_prefix">"You: "</string>
+    <string name="tg_edited">" (edited)"</string>
+    <string name="tg_media_photo">[photo]</string>
+    <string name="tg_media_voice">[voice message]</string>
+    <string name="tg_media_audio">[audio]</string>
+    <string name="tg_media_video">[video]</string>
+    <string name="tg_media_document">[document]</string>
+    <string name="tg_media_sticker">[sticker]</string>
+    <string name="tg_media_location">[location]</string>
+    <string name="tg_media_contact">[contact]</string>
+    <string name="tg_media_other">[file]</string>
+    <string name="tg_state_reconnecting">The bot cannot reach Telegram right now. paynani keeps trying.</string>
+    <string name="tg_state_conflict">Another program is using this bot\'s token. Messages are not arriving.</string>
+    <string name="tg_state_token_invalid">Telegram rejected the bot\'s token. Change it in PaynaniWeb or from the terminal.</string>
+    <string name="tg_state_service_down">The Telegram service is not running. Messages are not arriving.</string>
+    <string name="tg_state_unknown">The Telegram bot is in a state this version does not know.</string>
+    <string name="tg_input_hint">Telegram message</string>
+    <string name="tg_send">Send</string>
+    <string name="tg_cannot_reply">You can only reply here once this person writes to the bot.</string>
+    <string name="tg_cannot_reply_roster">This person is not on the roster: you can\'t reply from here.</string>
+    <string name="tg_sending">Sending…</string>
+    <string name="tg_failed">Not sent</string>
+    <string name="tg_error_not_allowed">paynani does not allow replying to this person.</string>
+    <string name="tg_error_not_started">This person has not written to the bot yet.</string>
+    <string name="tg_error_rate_limited">Too many messages. Try again in %1$d s.</string>
+    <string name="tg_error_unavailable">The Telegram service is not running.</string>
+    <string name="tg_error_offline">No connection with paynani.</string>
+    <string name="tg_error_generic">Something went wrong (%1$s).</string>
+    <!-- Webchat (paynani PRD #653). -->
+    <string name="nav_section_agent">AI Agent</string>
+    <string name="opt_webchat">Webchat</string>
+    <string name="wc_input_hint">Write to your agent</string>
+    <string name="wc_attach">Attach photos or files</string>
+    <string name="wc_remove">Remove %1$s</string>
+    <string name="wc_empty">No messages yet. What you write to your agent also shows in PaynaniWeb.</string>
+    <string name="wc_offline">No connection with paynani. The conversation shows up when it is back.</string>
+    <string name="wc_not_available">Webchat is not active in paynani for this phone.</string>
+    <string name="wc_error_read">The conversation could not be read (%1$s).</string>
+    <string name="wc_typing">%1$s is typing…</string>
+    <string name="wc_agent_default">Your agent</string>
+    <string name="wc_error_read_file">%1$s could not be read.</string>
+    <string name="wc_error_too_big_file">%1$s is over 20 MB.</string>
+    <string name="wc_error_bad_type">%1$s can\'t be sent: only photos (JPG, PNG, WebP or GIF), PDF, TXT, CSV, DOCX, XLSX or ZIP.</string>
+    <string name="wc_error_bad_type_any">paynani did not accept a file: its content does not match its type.</string>
+    <string name="wc_error_empty">Write something or attach a file.</string>
+    <string name="wc_error_too_long">The message is over 4000 characters.</string>
+    <string name="wc_error_too_big">The files together are over 25 MB.</string>
+    <string name="wc_error_too_many">Up to %1$d files per message.</string>
+    <string name="wc_error_bad_upload">A file was no longer in paynani (it expires after 10 minutes). Send again and it is uploaded again.</string>
+    <string name="wc_error_rate_limited">You sent many messages in a row. Wait a moment.</string>
+    <string name="wc_error_send">It could not be sent (%1$s). What you wrote stays so you can try again.</string>
+    <string name="wc_downloading">Downloading %1$s…</string>
+    <string name="wc_download">Download %1$s</string>
+    <string name="wc_no_app">There is no app to open %1$s.</string>
+    <string name="wc_error_download">%1$s could not be downloaded.</string>
+    <string name="wc_notification_channel">Webchat</string>
+    <string name="wc_notification_channel_desc">When your agent replies in Webchat</string>
+    <string name="wc_notification_title_default">Your agent</string>
+    <string name="wc_notification_public">Your agent replied</string>
+</resources>

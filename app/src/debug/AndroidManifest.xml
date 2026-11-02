@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <!-- Sólo en debug: prueba A3 del detector de RCS (#55) con adb. -->
+        <receiver
+            android:name=".gateway.RcsDebugReceiver"
+            android:exported="true" />
+    </application>
+</manifest>

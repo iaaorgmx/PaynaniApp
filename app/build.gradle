@@ -1,0 +1,125 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace "com.iaaorgmx.paynani"
+    compileSdkVersion 34
+    buildToolsVersion "30.0.3"
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    defaultConfig {
+        applicationId "com.iaaorgmx.paynani"
+        minSdkVersion 26
+        targetSdkVersion 35
+        // QA-3: el workflow de release los pasa con -PversionCode y -PversionName.
+        // versionCode sigue el formato aaaammddNN (fecha + dos dígitos de la corrida) que muestra AboutFragment.
+        versionCode((project.findProperty("versionCode") ?: "202610011") as Integer)
+        versionName((project.findProperty("versionName") ?: "1.0") as String)
+
+        multiDexEnabled true
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // ARQ-5 (#105): Room guarda el esquema de cada versión en app/schemas.
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+    }
+
+    // QA-3: la llave de firma nunca está en el repo. El workflow de release la
+    // escribe desde los secretos de GitHub Actions y pasa su ruta y claves por
+    // variables de entorno. Sin ellas, assembleRelease da un APK sin firmar.
+    signingConfigs {
+        release {
+            def ks = System.getenv("PAYNANI_KEYSTORE_FILE")
+            if (ks) {
+                storeFile file(ks)
+                storePassword System.getenv("PAYNANI_KEYSTORE_PASSWORD")
+                keyAlias System.getenv("PAYNANI_KEY_ALIAS")
+                keyPassword System.getenv("PAYNANI_KEY_PASSWORD")
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            if (System.getenv("PAYNANI_KEYSTORE_FILE")) {
+                signingConfig signingConfigs.release
+            }
+            minifyEnabled false
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+
+    // MigrationTestHelper lee los esquemas exportados.
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
+
+    packagingOptions {
+        jniLibs {
+            excludes += [
+                    'lib/armeabi/libiconv.so',
+                    'lib/armeabi/libzbarjni.so',
+                    'lib/armeabi-v7a/libiconv.so',
+                    'lib/armeabi-v7a/libzbarjni.so',
+                    'lib/x86/libiconv.so',
+                    'lib/x86/libzbarjni.so'
+            ]
+        }
+        resources {
+            excludes += [
+                    'META-INF/proguard/androidx-annotations.pro',
+                    'META-INF/LICENSE.txt',
+                    'META-INF/INDEX.LIST',
+                    'META-INF/DEPENDENCIES',
+                    'META-INF/NOTICE.txt'
+            ]
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.drawerlayout:drawerlayout:1.2.0'
+
+
+    implementation 'androidx.multidex:multidex:2.0.1'
+
+    implementation "com.squareup.okhttp3:okhttp:4.12.0"
+
+    testImplementation 'junit:junit:4.13.2'
+
+    // ARQ-5 (#105): la bitácora con Room.
+    def room_version = "2.6.1"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    androidTestImplementation "androidx.room:room-testing:$room_version"
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+
+
+    // Pasarela SMS de paynani (SMS_GATEWAY.md): token cifrado y lector de QR.
+    implementation 'androidx.security:security-crypto:1.0.0'
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
+}
+

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ajustes (PaynaniApp#111, APP-C4): la pausa del agente después de que el dueño responde
+     desde «Mensajes» y, desde #142, las opciones de Channels. Tema Theme.Paynani.M3, como Estado. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Material3.CardView.Outlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="?attr/colorSurface"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:strokeColor="?attr/colorOutline"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:accessibilityHeading="true"
+                    android:text="@string/settings_pause_title"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="?attr/colorOnSurface"
+                    tools:targetApi="p" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/settings_pause_explain"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/settings_pause_layout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="@string/settings_pause_hint"
+                    app:helperText="@string/settings_pause_helper"
+                    app:suffixText="@string/settings_pause_suffix">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/settings_pause"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:minHeight="48dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Las opciones de «Channels» (#142): GatewaysFragment, ya sin opción propia en el menú.
+             Desde #144 trae sus propias tarjetas, iguales a la de arriba. -->
+        <FrameLayout
+            android:id="@+id/settings_channels"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- WhatsApp (PaynaniApp #171): el estado de la cuenta y la vinculación (WhatsAppFragment), ya
+             sin opción propia en el menú. Sólo si la pasarela anuncia whatsapp.status (FR-8). -->
+        <FrameLayout
+            android:id="@+id/settings_whatsapp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</ScrollView>

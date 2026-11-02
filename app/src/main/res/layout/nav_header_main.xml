@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Encabezado del menú lateral (#142), como el de la Station de Service Button: azul oscuro,
+     el nombre y el teléfono a la izquierda y el ícono de perfil a la derecha. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/nav_header_bg"
+    android:gravity="center_vertical"
+    android:minHeight="100dp"
+    android:orientation="horizontal"
+    android:paddingStart="16dp"
+    android:paddingTop="24dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="24dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tx_fullname_client"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tx_email_client"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/nav_header_subtitle" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="12dp"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_nav_profile" />
+</LinearLayout>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fondo del elemento elegido del menú lateral (#142): gris, como en la Station de Service Button. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/nav_item_checked" android:state_checked="true" />
+    <item android:drawable="@android:color/transparent" />
+</selector>

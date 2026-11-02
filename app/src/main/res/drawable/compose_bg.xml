@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- La caja para escribir en el hilo (PaynaniApp#111). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/msg_bubble_in" />
+    <corners android:radius="24dp" />
+</shape>

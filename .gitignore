@@ -1,0 +1,36 @@
+# Gradle
+.gradle/
+**/build/
+
+# Local configuration
+local.properties
+
+# Android Studio / IntelliJ local state
+.idea/
+*.iml
+
+# Generated Android files
+captures/
+.externalNativeBuild/
+.cxx/
+
+# APK/AAB outputs and signing artifacts
+*.apk
+*.aab
+*.ap_
+*.idsig
+*.jks
+*.keystore
+app/release/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Temporary local artifacts from previous work
+netstat
+projectFilesBackup/
+_r.git/
+___.git/

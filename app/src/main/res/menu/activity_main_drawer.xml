@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- El menú lateral como el de la Station de Service Button (#142): secciones con título.
+     Channels se movió a Settings. -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- «AI Agent» (paynani PRD #653, Q324 = A), como en PaynaniWeb: sólo con Webchat (FR-1). -->
+    <item
+        android:id="@+id/nav_section_agent"
+        android:title="@string/nav_section_agent"
+        android:visible="false">
+        <menu>
+            <group
+                android:id="@+id/nav_group_agent"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_webchat"
+                    android:icon="@drawable/ic_menu_agent"
+                    android:title="@string/opt_webchat" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/nav_section_management"
+        android:title="@string/nav_section_management">
+        <menu>
+            <group
+                android:id="@+id/nav_group_management"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_status"
+                    android:icon="@drawable/ic_menu_status"
+                    android:title="@string/opt_status" />
+                <item
+                    android:id="@+id/nav_messages"
+                    android:icon="@drawable/ic_menu_messages"
+                    android:title="@string/opt_messages" />
+                <!-- Sólo si la pasarela anuncia whatsapp.threads (paynani PRD #550 FR-25). -->
+                <item
+                    android:id="@+id/nav_whatsapp_messages"
+                    android:icon="@drawable/ic_menu_messages"
+                    android:title="@string/opt_whatsapp_messages"
+                    android:visible="false" />
+                <!-- Sólo si la pasarela anuncia telegram.threads (paynani PRD #609 FR-29a). -->
+                <item
+                    android:id="@+id/nav_telegram_messages"
+                    android:icon="@drawable/ic_menu_messages"
+                    android:title="@string/opt_telegram_messages"
+                    android:visible="false" />
+                <item
+                    android:id="@+id/nav_log"
+                    android:icon="@drawable/ic_menu_log"
+                    android:title="@string/opt_eventlog" />
+                <!-- «Roster» (paynani #409): sólo si la pasarela lo anuncia; Main2Activity lo muestra. -->
+                <item
+                    android:id="@+id/nav_roster"
+                    android:icon="@drawable/ic_menu_roster"
+                    android:title="@string/opt_roster"
+                    android:visible="false" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/nav_section_tools"
+        android:title="@string/nav_section_tools">
+        <menu>
+            <group
+                android:id="@+id/nav_group_tools"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_settings"
+                    android:icon="@drawable/ic_menu_settings"
+                    android:title="@string/opt_settings" />
+                <item
+                    android:id="@+id/nav_logout"
+                    android:icon="@drawable/ic_menu_pair_again"
+                    android:title="@string/opt_logout" />
+                <item
+                    android:id="@+id/nav_home"
+                    android:icon="@drawable/ic_menu_about"
+                    android:title="@string/opt_dashboard" />
+            </group>
+        </menu>
+    </item>
+</menu>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Sólo en debug: HTTP sin cifrar hacia la pasarela local, para probar sin túnel
+  (adb reverse tcp:8765 tcp:8765, o 10.0.2.2 desde el emulador). El release
+  sigue con la configuración de main: sólo HTTPS (SEC-3).
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">127.0.0.1</domain>
+        <domain includeSubdomains="false">10.0.2.2</domain>
+    </domain-config>
+</network-security-config>

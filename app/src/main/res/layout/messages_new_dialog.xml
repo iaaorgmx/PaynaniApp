@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- El número para «Nuevo mensaje» (PaynaniApp#111). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="24dp"
+    android:paddingTop="8dp"
+    android:paddingRight="24dp">
+
+    <EditText
+        android:id="@+id/messages_new_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/msg_new_number_hint"
+        android:importantForAutofill="no"
+        android:inputType="phone"
+        android:minHeight="48dp" />
+</LinearLayout>

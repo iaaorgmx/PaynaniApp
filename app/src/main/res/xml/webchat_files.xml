@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Los archivos de Webchat que se abren con otra app (paynani PRD #653): sólo la caché de webchat. -->
+<paths>
+    <cache-path name="webchat" path="webchat/" />
+</paths>

@@ -1,0 +1,46 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Marca de paynani (Manual de Identidad: iaaorgmx/paynani#27, brand/README.md) -->
+    <color name="paynani_grana">#8f2d2b</color>
+    <color name="paynani_tinta">#1c1c1a</color>
+    <!-- Menú lateral (#142), como la Station de Service Button: encabezado y elemento elegido. -->
+    <color name="nav_header_bg">#182c44</color>
+    <color name="nav_item_checked">#e0e0e0</color>
+    <color name="nav_header_subtitle">#c5cbd3</color>
+    <color name="paynani_papel">#f7f7f5</color>
+    <color name="paynani_gris">#66655f</color>
+
+    <!-- «Mensajes» (#83) -->
+    <color name="msg_bubble_in">#e8e7e3</color>
+    <!-- Globos de los hilos, los mismos de PaynaniWeb (web.css .hilo .globo): lo recibido,
+         lo que mandó el agente (o la API) y lo que mandó el dueño. -->
+    <color name="msg_bubble_received">#f7f7f5</color>
+    <color name="msg_bubble_received_line">#dedcd6</color>
+    <color name="msg_bubble_agent">#f6ecea</color>
+    <color name="msg_bubble_agent_line">#e7cfcb</color>
+    <color name="msg_bubble_owner">#edf6f0</color>
+    <color name="msg_bubble_owner_line">#b6d8c4</color>
+    <color name="msg_failed">#c62828</color>
+
+    <!-- Estado (#113): cada estado con color y con ícono, nunca solo color. -->
+    <color name="status_ok">#2e7d32</color>
+    <color name="status_ok_bg">#e8f3e9</color>
+    <color name="status_warn">#b26a00</color>
+    <color name="status_warn_bg">#fdf1dc</color>
+    <!-- El ámbar de aviso no llega a 4.5:1 sobre blanco; el texto de aviso va más oscuro. -->
+    <color name="status_warn_text">#8a5200</color>
+    <color name="status_tile_bg">#f6e9e8</color>
+    <color name="status_border">#e3e1dc</color>
+
+    <color name="colorbotones">#474848</color>
+    <color name="colormenus">#ffffff</color>
+
+    <!-- Reemplazan los colores de AppCompat con el mismo nombre: de aquí salen
+         colorPrimary/colorAccent del tema (barra superior grana). Lint los marca
+         como sin uso porque no ve el reemplazo; no borrarlos (#90). -->
+    <color name="primary_material_light" tools:ignore="UnusedResources">@color/paynani_grana</color>
+    <color name="primary_dark_material_light" tools:ignore="UnusedResources">@color/paynani_tinta</color>
+    <color name="accent_material_light" tools:ignore="UnusedResources">@color/paynani_grana</color>
+    <color name="accent_material_dark" tools:ignore="UnusedResources">@color/paynani_grana</color>
+    <color name="background_material_light" tools:ignore="UnusedResources">#fafafa</color>
+</resources>

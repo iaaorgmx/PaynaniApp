@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- «Nuevo mensaje» en la lista de «Mensajes» (PaynaniApp#111). -->
+<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/messages_new"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="16dp"
+    android:minHeight="56dp"
+    android:text="@string/msg_new"
+    app:backgroundTint="?attr/colorPrimary"
+    app:icon="@drawable/ic_msg_new"
+    app:iconTint="?attr/colorOnPrimary"
+    android:textColor="?attr/colorOnPrimary" />
