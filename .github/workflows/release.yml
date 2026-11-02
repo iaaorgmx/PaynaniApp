@@ -57,11 +57,15 @@ jobs:
           PAYNANI_KEY_PASSWORD: ${{ secrets.PAYNANI_KEY_PASSWORD }}
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
-          # versionCode = aaaammdd + dos dígitos de la corrida (2026101921). Con un solo dígito,
-          # la corrida que cae en 0 daba un código menor que el anterior del mismo día y Android
-          # no la instala encima (0.6.9-rc2: 202610190 < 202610199). Sigue siendo menor que
-          # 2,100,000,000, el tope de Android.
-          CODE="$(date -u +%Y%m%d)$(printf '%02d' $(( GITHUB_RUN_NUMBER % 100 )))"
+          # versionCode = aaaammdd + el cuarto de hora UTC del día, 00 a 95 (2026110290 a las 22:30).
+          # Antes eran los dos últimos dígitos de la corrida, pero PaynaniApp y PaynaniApp-Agentic
+          # son la misma app (mismo applicationId) con contadores de corrida distintos: la v1.0.0,
+          # corrida 1, salió con 2026110201, menor que la 0.13.0 de la Agentic (2026110227), y
+          # Android no la instaló encima (PaynaniApp-Agentic#175). Con la hora, el código crece
+          # igual en los dos repos; dos releases en el mismo cuarto de hora dan el mismo código, y
+          # Android acepta un código igual como actualización. Sigue debajo de 2,100,000,000.
+          QUARTER=$(( (10#$(date -u +%H) * 60 + 10#$(date -u +%M)) / 15 ))
+          CODE="$(date -u +%Y%m%d)$(printf '%02d' "$QUARTER")"
           ./gradlew assembleRelease --no-daemon -PversionName="$VERSION" -PversionCode="$CODE"
           APK="PaynaniApp-$VERSION.apk"
           cp app/build/outputs/apk/release/app-release.apk "$APK"
