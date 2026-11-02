@@ -2,15 +2,10 @@ package com.iaaorgmx.paynani;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Intent;
 
 /**
- * Emparejar de nuevo (#61): borra el emparejamiento actual y abre la pantalla de
- * emparejar, para cambiar de pasarela sin reinstalar. Lo usan el menú lateral y
- * el botón de Estado cuando la conexión lleva rato cortada.
- *
- * No toca las preferencias del teléfono, como la confirmación de «Chats RCS»
- * (#54): ésas no están en GatewayPrefs.
+ * Emparejar de nuevo: borra el emparejamiento actual y abre la pantalla de emparejar,
+ * para cambiar de pasarela sin reinstalar. Lo usan el menú lateral y el botón de Estado.
  */
 public final class PairAgain {
 
@@ -24,7 +19,6 @@ public final class PairAgain {
                 .setPositiveButton(android.R.string.ok, (d, w) -> {
                     SessionManager session = new SessionManager(activity.getApplicationContext());
                     session.logoutUser();
-                    activity.stopService(new Intent(activity, SMSService.class));
                     session.checkLogin();
                     activity.finish();
                 })

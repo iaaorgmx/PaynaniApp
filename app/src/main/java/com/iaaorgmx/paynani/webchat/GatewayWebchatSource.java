@@ -7,8 +7,8 @@ import android.os.Looper;
 import com.iaaorgmx.paynani.gateway.GatewayClient;
 import com.iaaorgmx.paynani.gateway.GatewayPrefs;
 import com.iaaorgmx.paynani.gateway.GatewayRequests;
-import com.iaaorgmx.paynani.whatsapp.WhatsAppSource.Callback;
-import com.iaaorgmx.paynani.whatsapp.WhatsAppSource.Failure;
+import com.iaaorgmx.paynani.webchat.WebchatSource.Callback;
+import com.iaaorgmx.paynani.webchat.WebchatSource.Failure;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

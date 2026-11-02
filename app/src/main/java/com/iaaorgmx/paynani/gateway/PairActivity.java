@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.iaaorgmx.paynani.BuildConfig;
 import com.iaaorgmx.paynani.Main2Activity;
 import com.iaaorgmx.paynani.R;
-import com.iaaorgmx.paynani.SMSService;
+import com.iaaorgmx.paynani.GlobalInstance;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
@@ -112,7 +112,8 @@ public class PairActivity extends AppCompatActivity {
                 JSONObject body = new JSONObject();
                 body.put("code", pairCode.trim().toUpperCase());
                 body.put("device", device);
-                body.put("sims", Protocol.sims(this));
+                // Sólo Webchat (PaynaniApp-Agentic#175): sin SIM; el hello dice "sms": false.
+                body.put("sims", new org.json.JSONArray());
                 OkHttpClient http = new OkHttpClient.Builder().callTimeout(20, TimeUnit.SECONDS).build();
                 Request request = new Request.Builder().url(url)
                         .post(RequestBody.create(body.toString(), MediaType.get("application/json; charset=utf-8")))
@@ -141,8 +142,7 @@ public class PairActivity extends AppCompatActivity {
                 status.setText(m);
                 pair.setEnabled(true);
                 if (success) {
-                    Intent service = new Intent(this, SMSService.class);
-                    startForegroundService(service);
+                    GlobalInstance.paired(this);
                     startActivity(new Intent(this, Main2Activity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                     finish();
                 }

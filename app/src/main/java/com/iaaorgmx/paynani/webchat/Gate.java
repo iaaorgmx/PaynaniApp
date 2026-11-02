@@ -1,4 +1,4 @@
-package com.iaaorgmx.paynani.whatsapp;
+package com.iaaorgmx.paynani.webchat;
 
 /**
  * Decide si una respuesta de la pasarela todavía le toca a la pantalla. Cada petición se lleva una

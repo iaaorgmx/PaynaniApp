@@ -35,10 +35,6 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.iaaorgmx.paynani.R;
-import com.iaaorgmx.paynani.messages.Fmt;
-import com.iaaorgmx.paynani.messages.OutgoingText;
-import com.iaaorgmx.paynani.whatsapp.Gate;
-import com.iaaorgmx.paynani.whatsapp.WhatsAppSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -238,7 +234,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
         }
         int t = readGate.next();
         if (messages.isEmpty()) showState(true, null, false);
-        source.thread(null, null, new WhatsAppSource.Callback<WebchatSource.Thread>() {
+        source.thread(null, null, new WebchatSource.Callback<WebchatSource.Thread>() {
             @Override
             public void onResult(WebchatSource.Thread th) {
                 if (!readGate.accepts(t) || !isAdded()) return;
@@ -253,7 +249,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
             }
 
             @Override
-            public void onError(WhatsAppSource.Failure f) {
+            public void onError(WebchatSource.Failure f) {
                 if (!readGate.accepts(t) || !isAdded()) return;
                 if ("offline".equals(f.code) || "timeout".equals(f.code)) {
                     offline();
@@ -278,7 +274,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
             return;
         }
         int t = readGate.current();
-        source.thread(after, null, new WhatsAppSource.Callback<WebchatSource.Thread>() {
+        source.thread(after, null, new WebchatSource.Callback<WebchatSource.Thread>() {
             @Override
             public void onResult(WebchatSource.Thread th) {
                 if (!readGate.accepts(t) || !isAdded()) return;
@@ -290,7 +286,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
             }
 
             @Override
-            public void onError(WhatsAppSource.Failure f) {
+            public void onError(WebchatSource.Failure f) {
                 if (readGate.accepts(t) && isAdded() && ("offline".equals(f.code) || "timeout".equals(f.code))) {
                     offline();
                 }
@@ -304,7 +300,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
         loadingOlder = true;
         int t = readGate.current();
         String before = nextBefore;
-        source.thread(null, before, new WhatsAppSource.Callback<WebchatSource.Thread>() {
+        source.thread(null, before, new WebchatSource.Callback<WebchatSource.Thread>() {
             @Override
             public void onResult(WebchatSource.Thread th) {
                 loadingOlder = false;
@@ -317,7 +313,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
             }
 
             @Override
-            public void onError(WhatsAppSource.Failure f) {
+            public void onError(WebchatSource.Failure f) {
                 loadingOlder = false;
             }
         });
@@ -434,7 +430,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
 
     private void uploadNext(int t, List<Pending> files, int i, List<String> refs, String text) {
         if (i == files.size()) {
-            source.send(text, refs, new WhatsAppSource.Callback<WebchatSource.Message>() {
+            source.send(text, refs, new WebchatSource.Callback<WebchatSource.Message>() {
                 @Override
                 public void onResult(WebchatSource.Message m) {
                     if (!sendGate.accepts(t) || !isAdded()) return;
@@ -450,7 +446,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
                 }
 
                 @Override
-                public void onError(WhatsAppSource.Failure f) {
+                public void onError(WebchatSource.Failure f) {
                     failed(t, f);
                 }
             });
@@ -462,7 +458,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
             uploadNext(t, files, i + 1, refs, text);
             return;
         }
-        source.upload(p.name, p.mime, p.data, new WhatsAppSource.Callback<String>() {
+        source.upload(p.name, p.mime, p.data, new WebchatSource.Callback<String>() {
             @Override
             public void onResult(String upload) {
                 if (!sendGate.accepts(t) || !isAdded()) return;
@@ -472,14 +468,14 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
             }
 
             @Override
-            public void onError(WhatsAppSource.Failure f) {
+            public void onError(WebchatSource.Failure f) {
                 failed(t, f);
             }
         });
     }
 
     /** Lo escrito y los archivos se quedan, para volver a intentar. */
-    private void failed(int t, WhatsAppSource.Failure f) {
+    private void failed(int t, WebchatSource.Failure f) {
         if (!sendGate.accepts(t) || !isAdded()) return;
         sending = false;
         // Un up_… vencido o ya usado: el siguiente intento vuelve a subir los archivos.
@@ -499,7 +495,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
             return;
         }
         view.setImageDrawable(null);
-        source.file(f.ref, new WhatsAppSource.Callback<byte[]>() {
+        source.file(f.ref, new WebchatSource.Callback<byte[]>() {
             @Override
             public void onResult(byte[] data) {
                 io.execute(() -> {
@@ -513,7 +509,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
             }
 
             @Override
-            public void onError(WhatsAppSource.Failure failure) {
+            public void onError(WebchatSource.Failure failure) {
                 // La foto se queda sin cargar; el nombre sigue en la descripción.
             }
         });
@@ -528,7 +524,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
         }
         Context ctx = requireContext().getApplicationContext();
         toast(getString(R.string.wc_downloading, f.name));
-        source.file(f.ref, new WhatsAppSource.Callback<byte[]>() {
+        source.file(f.ref, new WebchatSource.Callback<byte[]>() {
             @Override
             public void onResult(byte[] data) {
                 io.execute(() -> {
@@ -562,7 +558,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
             }
 
             @Override
-            public void onError(WhatsAppSource.Failure failure) {
+            public void onError(WebchatSource.Failure failure) {
                 if (isAdded()) toast(getString(R.string.wc_error_download, f.name));
             }
         });
@@ -722,7 +718,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
             text.setVisibility(m.text.isEmpty() ? View.GONE : View.VISIBLE);
             text.setText(m.text);
             long at = WebchatRules.parseIso(m.at);
-            meta.setText(at > 0 ? Fmt.time(parent.getContext(), at) : "");
+            meta.setText(at > 0 ? time(parent.getContext(), at) : "");
             return view;
         }
 
@@ -786,5 +782,18 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
             if (out.size() > max) return null;
         }
         return out.toByteArray();
+    }
+
+    /** «5:52 a.m.» (o «17:52» si el teléfono usa 24 horas). */
+    static String time(android.content.Context context, long millis) {
+        java.util.Calendar c = java.util.Calendar.getInstance();
+        c.setTimeInMillis(millis);
+        if (android.text.format.DateFormat.is24HourFormat(context)) {
+            return String.format(java.util.Locale.ROOT, "%d:%02d", c.get(java.util.Calendar.HOUR_OF_DAY),
+                    c.get(java.util.Calendar.MINUTE));
+        }
+        int h = c.get(java.util.Calendar.HOUR);
+        return String.format(java.util.Locale.ROOT, "%d:%02d ", h == 0 ? 12 : h, c.get(java.util.Calendar.MINUTE))
+                + context.getString(c.get(java.util.Calendar.AM_PM) == java.util.Calendar.AM ? R.string.msg_am : R.string.msg_pm);
     }
 }

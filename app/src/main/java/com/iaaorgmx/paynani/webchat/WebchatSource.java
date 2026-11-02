@@ -1,6 +1,5 @@
 package com.iaaorgmx.paynani.webchat;
 
-import com.iaaorgmx.paynani.whatsapp.WhatsAppSource;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +11,7 @@ import java.util.List;
  * teléfono emparejado; los archivos por HTTP en la misma pasarela (FR-5), porque el WebSocket tiene
  * un tope de 256 KB por mensaje. La pantalla también se prueba con {@link DemoWebchatSource}.
  *
- * Las respuestas llegan en el hilo principal. Los errores son {@link WhatsAppSource.Failure}.
+ * Las respuestas llegan en el hilo principal. Los errores son {@link Failure}.
  */
 public interface WebchatSource {
 
@@ -85,6 +84,29 @@ public interface WebchatSource {
         }
     }
 
+    /** Un error de la pasarela o de la conexión: su `code` (offline, forbidden, too_big…) y el campo. */
+    final class Failure {
+        public final String code;
+        public final String field;
+        public final int retryAfterS;
+
+        public Failure(String code, String field, int retryAfterS) {
+            this.code = code == null ? "" : code;
+            this.field = field == null ? "" : field;
+            this.retryAfterS = retryAfterS;
+        }
+
+        public static Failure of(String code) {
+            return new Failure(code, "", 0);
+        }
+    }
+
+    interface Callback<T> {
+        void onResult(T result);
+
+        void onError(Failure failure);
+    }
+
     /** Si hay conexión, la pasarela anuncia webchat.thread y este teléfono tiene webchat.owner (FR-1). */
     boolean available();
 
@@ -95,17 +117,17 @@ public interface WebchatSource {
      * webchat.thread: con after, sólo lo posterior a ese id (para refrescar); con before, lo
      * anterior (para «Mensajes anteriores»); sin los dos, los últimos.
      */
-    void thread(String after, String before, WhatsAppSource.Callback<Thread> cb);
+    void thread(String after, String before, Callback<Thread> cb);
 
     /**
      * Sube un archivo (FR-5, POST /sms/webchat/upload) y devuelve su up_…: de un solo uso, vence a
      * los 10 minutos y sólo se consume cuando el mensaje se guarda (SMS_GATEWAY.md §13).
      */
-    void upload(String name, String mime, byte[] data, WhatsAppSource.Callback<String> cb);
+    void upload(String name, String mime, byte[] data, Callback<String> cb);
 
     /** webchat.send (FR-4): texto y los up_… ya subidos. */
-    void send(String text, List<String> uploads, WhatsAppSource.Callback<Message> cb);
+    void send(String text, List<String> uploads, Callback<Message> cb);
 
     /** Los bytes de un archivo de la conversación (FR-5). */
-    void file(String ref, WhatsAppSource.Callback<byte[]> cb);
+    void file(String ref, Callback<byte[]> cb);
 }

@@ -4,8 +4,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Base64;
 
-import com.iaaorgmx.paynani.whatsapp.WhatsAppSource.Callback;
-import com.iaaorgmx.paynani.whatsapp.WhatsAppSource.Failure;
+import com.iaaorgmx.paynani.webchat.WebchatSource.Callback;
+import com.iaaorgmx.paynani.webchat.WebchatSource.Failure;
 
 import java.time.Instant;
 import java.util.ArrayList;

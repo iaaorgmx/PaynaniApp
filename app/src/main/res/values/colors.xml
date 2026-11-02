@@ -16,11 +16,8 @@
          lo que mandó el agente (o la API) y lo que mandó el dueño. -->
     <color name="msg_bubble_received">#f7f7f5</color>
     <color name="msg_bubble_received_line">#dedcd6</color>
-    <color name="msg_bubble_agent">#f6ecea</color>
-    <color name="msg_bubble_agent_line">#e7cfcb</color>
     <color name="msg_bubble_owner">#edf6f0</color>
     <color name="msg_bubble_owner_line">#b6d8c4</color>
-    <color name="msg_failed">#c62828</color>
 
     <!-- Estado (#113): cada estado con color y con ícono, nunca solo color. -->
     <color name="status_ok">#2e7d32</color>

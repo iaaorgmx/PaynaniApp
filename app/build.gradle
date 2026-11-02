@@ -22,14 +22,6 @@ android {
 
         multiDexEnabled true
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        // ARQ-5 (#105): Room guarda el esquema de cada versión en app/schemas.
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
-            }
-        }
 
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8
@@ -66,10 +58,6 @@ android {
     }
 
     // MigrationTestHelper lee los esquemas exportados.
-    sourceSets {
-        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
-    }
-
     packagingOptions {
         jniLibs {
             excludes += [
@@ -110,12 +98,6 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
 
     // ARQ-5 (#105): la bitácora con Room.
-    def room_version = "2.6.1"
-    implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
-    androidTestImplementation "androidx.room:room-testing:$room_version"
-    androidTestImplementation 'androidx.test:runner:1.5.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
 
 
     // Pasarela SMS de paynani (SMS_GATEWAY.md): token cifrado y lector de QR.

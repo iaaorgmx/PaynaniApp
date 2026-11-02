@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Estado (#113): fondo de las cifras de «Mensajes de hoy». -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <solid android:color="@color/status_tile_bg" />
-    <corners android:radius="12dp" />
-</shape>

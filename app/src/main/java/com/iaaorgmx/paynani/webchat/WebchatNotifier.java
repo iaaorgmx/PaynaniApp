@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat;
 
 import com.iaaorgmx.paynani.Main2Activity;
 import com.iaaorgmx.paynani.R;
-import com.iaaorgmx.paynani.whatsapp.WhatsAppSource;
 
 import java.util.List;
 
@@ -24,7 +23,7 @@ import java.util.List;
  * La notificación de Android cuando el agente contesta en Webchat y la pantalla no está abierta
  * (paynani PRD #653 FR-11, Q323 = A), mientras la app esté conectada a paynani. La pasarela manda
  * webchat.changed a toda conexión con webchat.owner (FR-6); con messages se piden sólo los
- * mensajes posteriores al último que el dueño vio. Vive con SMSService, que siempre corre.
+ * mensajes posteriores al último que el dueño vio. Vive mientras la app está conectada (GlobalInstance).
  */
 public final class WebchatNotifier implements WebchatEvents.Listener {
 
@@ -44,7 +43,7 @@ public final class WebchatNotifier implements WebchatEvents.Listener {
         this.context = context.getApplicationContext();
     }
 
-    /** Desde SMSService.onCreate, en el hilo principal. */
+    /** Desde GlobalInstance, en el hilo principal, al conectar. */
     public static synchronized void start(Context context) {
         if (instance != null) return;
         instance = new WebchatNotifier(context);
@@ -77,7 +76,7 @@ public final class WebchatNotifier implements WebchatEvents.Listener {
         if (!source.available()) return;
         String lastSeen = prefs(context).getString(LAST_SEEN, null);
         busy = true;
-        source.thread(lastSeen, null, new WhatsAppSource.Callback<WebchatSource.Thread>() {
+        source.thread(lastSeen, null, new WebchatSource.Callback<WebchatSource.Thread>() {
             @Override
             public void onResult(WebchatSource.Thread t) {
                 busy = false;
@@ -93,7 +92,7 @@ public final class WebchatNotifier implements WebchatEvents.Listener {
             }
 
             @Override
-            public void onError(WhatsAppSource.Failure failure) {
+            public void onError(WebchatSource.Failure failure) {
                 busy = false;
             }
         });

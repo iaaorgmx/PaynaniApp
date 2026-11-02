@@ -38,19 +38,6 @@
         <item name="android:colorBackground">@color/paynani_papel</item>
     </style>
 
-    <!-- Diálogos Material3 de «Roster» (paynani #409): los colores de la app, no los de M3 por defecto. -->
-    <style name="ThemeOverlay.Paynani.M3.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
-        <item name="colorPrimary">@color/paynani_grana</item>
-        <item name="colorOnPrimary">@android:color/white</item>
-        <item name="colorSurface">@android:color/white</item>
-        <item name="colorOnSurface">@color/paynani_tinta</item>
-        <item name="colorOnSurfaceVariant">@color/paynani_gris</item>
-        <item name="colorOutline">@color/status_border</item>
-        <item name="colorSurfaceContainerHigh">@android:color/white</item>
-        <!-- Blanco como las tarjetas de Estado: sin esto, M3 tiñe el fondo con colorPrimary según la
-             elevación del diálogo y sale rosado (Julian, 2026-10-20). -->
-        <item name="elevationOverlayEnabled">false</item>
-    </style>
 
     <!-- Título de cada grupo de «About» (#146), fuera de la tarjeta, como en Ajustes de Android. -->
     <style name="Paynani.AboutSection" parent="">
