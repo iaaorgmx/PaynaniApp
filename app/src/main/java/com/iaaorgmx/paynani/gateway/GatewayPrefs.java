@@ -55,6 +55,22 @@ public final class GatewayPrefs {
         prefs.edit().clear().apply();
     }
 
+    /**
+     * Las llaves de PaynaniApp-Agentic que esta app no usa: la lista de teléfonos del roster, la
+     * SIM, la batería, los contadores y el último remitente (Metis en PaynaniApp#1). El
+     * emparejamiento (ws_url, device_id, token, revoked) se queda.
+     */
+    static final String[] LEGACY_KEYS = {"allowed", "battery_sent_at", "battery_sent_charging",
+            "battery_sent_pct", "clock_offset_ms", "delivered_calls", "delivered_day", "delivered_sms",
+            "device_status", "last_delivered_at", "last_delivered_from", "last_delivered_type",
+            "max_out_per_hour", "sim_number", "sim_slot", "sweep_mark"};
+
+    public void dropLegacy() {
+        SharedPreferences.Editor e = prefs.edit();
+        for (String key : LEGACY_KEYS) e.remove(key);
+        e.apply();
+    }
+
     public String getWsUrl() { return prefs.getString("ws_url", ""); }
     public String getDeviceId() { return prefs.getString("device_id", ""); }
     public String getToken() { return prefs.getString("token", ""); }

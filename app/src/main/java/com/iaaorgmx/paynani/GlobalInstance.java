@@ -30,6 +30,7 @@ public class GlobalInstance extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Leftovers.clean(this);
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override public void onActivityStarted(Activity activity) {
                 if (started++ == 0) foreground();
