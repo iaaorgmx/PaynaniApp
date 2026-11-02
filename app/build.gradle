@@ -15,7 +15,7 @@ android {
         minSdkVersion 26
         targetSdkVersion 36
         // QA-3: el workflow de release los pasa con -PversionCode y -PversionName.
-        // versionCode sigue el formato aaaammddNN (fecha + dos dígitos de la corrida) que muestra AboutFragment.
+        // versionCode sigue el formato aaaammddQQ (fecha UTC + cuarto de hora del día, 00–95) que muestra AboutFragment.
         versionCode((project.findProperty("versionCode") ?: "202610011") as Integer)
         versionName((project.findProperty("versionName") ?: "1.0") as String)
 
