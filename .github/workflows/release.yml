@@ -64,8 +64,11 @@ jobs:
           # Android no la instaló encima (PaynaniApp-Agentic#175). Con la hora, el código crece
           # igual en los dos repos; dos releases en el mismo cuarto de hora dan el mismo código, y
           # Android acepta un código igual como actualización. Sigue debajo de 2,100,000,000.
-          QUARTER=$(( (10#$(date -u +%H) * 60 + 10#$(date -u +%M)) / 15 ))
-          CODE="$(date -u +%Y%m%d)$(printf '%02d' "$QUARTER")"
+          # La fecha y la hora en una sola lectura: con dos, el cambio de día podía mezclar la
+          # fecha nueva con un cuarto de la noche anterior (Metis en PaynaniApp#2).
+          read -r DAY HOUR MIN < <(date -u '+%Y%m%d %H %M')
+          QUARTER=$(( (10#$HOUR * 60 + 10#$MIN) / 15 ))
+          CODE="${DAY}$(printf '%02d' "$QUARTER")"
           ./gradlew assembleRelease --no-daemon -PversionName="$VERSION" -PversionCode="$CODE"
           APK="PaynaniApp-$VERSION.apk"
           cp app/build/outputs/apk/release/app-release.apk "$APK"
