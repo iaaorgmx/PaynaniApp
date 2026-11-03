@@ -45,8 +45,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Webchat (paynani PRD #653 FR-8 a FR-10): la conversación del dueño con su agente, la misma de
@@ -99,7 +97,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
 
     private WebchatSource source;
     private final Handler main = new Handler(Looper.getMainLooper());
-    private final ExecutorService io = Executors.newSingleThreadExecutor();
+    private final SafeIo io = new SafeIo();
     private ListView list;
     private View stateView;
     private View progressView;
@@ -202,7 +200,9 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        io.shutdownNow();
+        io.shutdown();
+        // Lo que el hilo de fondo dejó para la pantalla ya no tiene a quién mostrarse (#5).
+        main.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -345,19 +345,19 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
     private void picked(List<Uri> uris) {
         if (uris == null || uris.isEmpty() || !isAdded()) return;
         Context ctx = requireContext().getApplicationContext();
-        io.execute(() -> {
+        io.run(() -> {
             for (Uri uri : uris) {
                 String name = displayName(ctx, uri);
                 long size = size(ctx, uri);
                 String problem = WebchatRules.fileProblem(name, size);
                 if (problem != null) {
-                    main.post(() -> toast(fileProblemText(problem, name)));
+                    later(() -> toast(fileProblemText(problem, name)));
                     continue;
                 }
                 try (InputStream in = ctx.getContentResolver().openInputStream(uri)) {
                     byte[] data = readAll(in, WebchatRules.MAX_FILE);
                     if (data == null) {
-                        main.post(() -> toast(fileProblemText(WebchatRules.TOO_BIG, name)));
+                        later(() -> toast(fileProblemText(WebchatRules.TOO_BIG, name)));
                         continue;
                     }
                     Pending p = new Pending(name, WebchatRules.mime(name), data);
@@ -371,7 +371,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
                         showPending();
                     });
                 } catch (Exception e) {
-                    main.post(() -> toast(getString(R.string.wc_error_read_file, name)));
+                    later(() -> toast(getString(R.string.wc_error_read_file, name)));
                 }
             }
         });
@@ -498,7 +498,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
         source.file(f.ref, new WebchatSource.Callback<byte[]>() {
             @Override
             public void onResult(byte[] data) {
-                io.execute(() -> {
+                io.run(() -> {
                     Bitmap b = decode(data, PHOTO_PX);
                     if (b == null) return;
                     PHOTOS.put(f.ref, b);
@@ -527,7 +527,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
         source.file(f.ref, new WebchatSource.Callback<byte[]>() {
             @Override
             public void onResult(byte[] data) {
-                io.execute(() -> {
+                io.run(() -> {
                     try {
                         File dir = new File(ctx.getCacheDir(), "webchat");
                         if (!dir.isDirectory() && !dir.mkdirs()) throw new Exception("sin carpeta");
@@ -552,7 +552,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
                             }
                         });
                     } catch (Exception e) {
-                        main.post(() -> toast(getString(R.string.wc_error_download, f.name)));
+                        later(() -> toast(getString(R.string.wc_error_download, f.name)));
                     }
                 });
             }
@@ -591,6 +591,16 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
 
     private void toast(String text) {
         if (isAdded()) Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Algo para la pantalla desde el hilo de fondo. Si el fragmento ya se fue, no corre: getString y
+     * requireContext lanzan IllegalStateException sin él (#5).
+     */
+    private void later(Runnable ui) {
+        main.post(() -> {
+            if (isAdded()) ui.run();
+        });
     }
 
     private String fileProblemText(String code, String name) {
