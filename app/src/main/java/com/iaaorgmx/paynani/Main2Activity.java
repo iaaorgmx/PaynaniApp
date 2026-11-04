@@ -29,8 +29,8 @@ import com.iaaorgmx.paynani.webchat.WebchatSources;
 
 /**
  * La pantalla principal: el menú lateral y la conversación con el agente
- * (PaynaniApp-Agentic#175: esta app sólo hace Webchat). Sin Webchat anunciado por la
- * pasarela, abre Estado.
+ * (PaynaniApp-Agentic#175: esta app sólo hace Webchat). Sin emparejar, Webchat explica qué es
+ * paynani y cómo emparejar (#7). Emparejada pero sin Webchat anunciado por la pasarela, abre Estado.
  */
 public class Main2Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -74,8 +74,9 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         updateMenu();
 
         if (savedInstanceState == null) {
-            boolean webchat = WebchatSources.menuVisible(this);
-            show(webchat ? new WebchatFragment() : new StatusFragment(), webchat ? R.id.nav_webchat : R.id.nav_status);
+            if (!paired) show(new WelcomeFragment(), R.id.nav_webchat);
+            else if (WebchatSources.menuVisible(this)) show(new WebchatFragment(), R.id.nav_webchat);
+            else show(new StatusFragment(), R.id.nav_status);
         }
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.app_name, R.string.app_name) {
@@ -109,9 +110,13 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         show(new WebchatFragment(), R.id.nav_webchat);
     }
 
-    /** Webchat sólo si la pasarela lo anuncia en el welcome (SMS_GATEWAY.md §13). */
+    /**
+     * Webchat si la pasarela lo anuncia en el welcome (SMS_GATEWAY.md §13), o sin emparejar, donde
+     * explica cómo hacerlo (#7).
+     */
     private void updateMenu() {
-        navigationView.getMenu().findItem(R.id.nav_section_agent).setVisible(WebchatSources.menuVisible(this));
+        navigationView.getMenu().findItem(R.id.nav_section_agent)
+                .setVisible(!session.isLoggedIn() || WebchatSources.menuVisible(this));
     }
 
     private void show(Fragment fragment, int item) {
@@ -123,7 +128,7 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.nav_webchat) {
-            show(new WebchatFragment(), id);
+            show(session.isLoggedIn() ? new WebchatFragment() : new WelcomeFragment(), id);
         } else if (id == R.id.nav_status) {
             show(new StatusFragment(), id);
         } else if (id == R.id.nav_home) {

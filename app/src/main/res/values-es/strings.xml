@@ -16,6 +16,14 @@
 
 
     <string name="pair_title">Emparejar con paynani</string>
+    <!-- Primer inicio sin emparejar y el prompt de ejemplo (#7). -->
+    <string name="pair_prompt_label">Pídele a tu agente, tal cual:</string>
+    <string name="pair_prompt">Muéstrame el código QR para emparejar PaynaniApp con paynani.</string>
+    <string name="pair_prompt_copy">Copiar</string>
+    <string name="pair_prompt_copied">Copiado. Pégaselo a tu agente.</string>
+    <string name="welcome_title">Platica con tu agente de IA</string>
+    <string name="welcome_body">PaynaniApp es la app para platicar con tu agente de IA, que corre en tu computadora con paynani. Empareja este teléfono con paynani para empezar.</string>
+    <string name="welcome_guide">Cómo instalar paynani</string>
     <string name="pair_help">Pídele a tu agente un código para emparejar este teléfono. Escanea el código QR que te muestre, o escribe la dirección y el código.</string>
     <string name="pair_scan">Escanear código QR</string>
     <string name="pair_scan_prompt">Apunta la cámara al código QR de emparejamiento de paynani</string>
