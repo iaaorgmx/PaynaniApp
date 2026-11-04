@@ -1,80 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- La pantalla de emparejar, con la misma barra superior que la pantalla principal (Julian en #8). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <TextView
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/pair_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/pair_title"
-            android:textSize="24sp"
-            android:textColor="@color/paynani_grana"
-            android:layout_marginBottom="12dp" />
+            android:orientation="vertical"
+            android:padding="24dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/pair_help"
-            android:textSize="15sp"
-            android:layout_marginBottom="20dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pair_help"
+                android:textSize="15sp"
+                android:layout_marginBottom="20dp" />
 
-        <!-- #7: lo que se le pide al agente para que muestre el QR. -->
-        <include
-            layout="@layout/pair_prompt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp" />
+            <!-- #7: lo que se le pide al agente para que muestre el QR. -->
+            <include
+                layout="@layout/pair_prompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp" />
 
-        <Button
-            android:id="@+id/pair_scan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/pair_scan" />
+            <Button
+                android:id="@+id/pair_scan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pair_scan" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/pair_or_manual"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="8dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pair_or_manual"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp" />
 
-        <EditText
-            android:id="@+id/pair_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/pair_address_hint"
-            android:inputType="textUri"
-            android:importantForAutofill="no" />
+            <EditText
+                android:id="@+id/pair_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/pair_address_hint"
+                android:inputType="textUri"
+                android:importantForAutofill="no" />
 
-        <EditText
-            android:id="@+id/pair_code"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/pair_code_hint"
-            android:inputType="textCapCharacters|textNoSuggestions"
-            android:maxLength="8"
-            android:importantForAutofill="no" />
+            <EditText
+                android:id="@+id/pair_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/pair_code_hint"
+                android:inputType="textCapCharacters|textNoSuggestions"
+                android:maxLength="8"
+                android:importantForAutofill="no" />
 
-        <Button
-            android:id="@+id/pair_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/pair_button" />
+            <Button
+                android:id="@+id/pair_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/pair_button" />
 
-        <TextView
-            android:id="@+id/pair_status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textSize="15sp" />
-    </LinearLayout>
-</ScrollView>
+            <TextView
+                android:id="@+id/pair_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
