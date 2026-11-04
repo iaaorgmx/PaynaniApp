@@ -15,6 +15,7 @@ import com.iaaorgmx.paynani.BuildConfig;
 import com.iaaorgmx.paynani.Main2Activity;
 import com.iaaorgmx.paynani.R;
 import com.iaaorgmx.paynani.GlobalInstance;
+import com.iaaorgmx.paynani.PairPrompt;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
@@ -52,6 +53,7 @@ public class PairActivity extends AppCompatActivity {
         code = findViewById(R.id.pair_code);
         status = findViewById(R.id.pair_status);
         pair = findViewById(R.id.pair_button);
+        PairPrompt.bind(findViewById(android.R.id.content));
         findViewById(R.id.pair_scan).setOnClickListener(v -> {
             ScanOptions options = new ScanOptions();
             options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);

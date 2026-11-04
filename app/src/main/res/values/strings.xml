@@ -33,6 +33,15 @@
 
 
     <string name="pair_title">Pair with paynani</string>
+    <!-- Primer inicio sin emparejar y el prompt de ejemplo (#7). -->
+    <string name="pair_prompt_label">Ask your agent, word for word:</string>
+    <string name="pair_prompt">Show me the QR code to pair PaynaniApp with paynani.</string>
+    <string name="pair_prompt_copy">Copy</string>
+    <string name="pair_prompt_copied">Copied. Paste it to your agent.</string>
+    <string name="welcome_title">Chat with your AI agent</string>
+    <string name="welcome_body">PaynaniApp is the app to chat with your AI agent, which runs on your computer with paynani. Pair this phone with paynani to start.</string>
+    <string name="welcome_guide">How to install paynani</string>
+    <string name="welcome_guide_url" translatable="false">https://github.com/iaaorgmx/paynani/blob/main/INSTALL.md</string>
     <string name="pair_help">Ask your agent for a code to pair this phone. Scan the QR code it shows you, or type the address and the code.</string>
     <string name="pair_scan">Scan QR code</string>
     <string name="pair_scan_prompt">Point the camera at the paynani pairing QR code</string>
