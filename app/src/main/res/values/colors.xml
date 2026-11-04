@@ -26,6 +26,11 @@
     <color name="status_warn_bg">#fdf1dc</color>
     <!-- El ámbar de aviso no llega a 4.5:1 sobre blanco; el texto de aviso va más oscuro. -->
     <color name="status_warn_text">#8a5200</color>
+    <!-- Rojo y gris de los estados del agente (#11), como «offline» y «unknown» en PaynaniWeb. -->
+    <color name="status_bad">#c62828</color>
+    <color name="status_bad_bg">#fdecea</color>
+    <color name="status_off">#7a7973</color>
+    <color name="status_off_bg">#efeeeb</color>
     <color name="status_tile_bg">#f6e9e8</color>
     <color name="status_border">#e3e1dc</color>
 

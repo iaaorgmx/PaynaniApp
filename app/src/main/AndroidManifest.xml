@@ -45,6 +45,12 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
 
+        <!-- La pantalla «Agente» (#11). -->
+        <activity
+            android:name=".agent.AgentActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
         <!-- Webchat (paynani PRD #653): abrir con otra app un archivo descargado de la conversación. -->
         <provider
             android:name="androidx.core.content.FileProvider"
