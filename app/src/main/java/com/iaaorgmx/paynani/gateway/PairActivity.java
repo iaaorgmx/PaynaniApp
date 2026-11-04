@@ -49,6 +49,19 @@ public class PairActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pair);
+        // La misma barra que la pantalla principal, con la flecha de regresar (Julian en #8).
+        setSupportActionBar(findViewById(R.id.pair_toolbar));
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.pair_title);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        // Atrás del sistema hace lo mismo que la flecha (Iris en #9).
+        getOnBackPressedDispatcher().addCallback(this, new androidx.activity.OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                leave();
+            }
+        });
         address = findViewById(R.id.pair_address);
         code = findViewById(R.id.pair_code);
         status = findViewById(R.id.pair_status);
@@ -150,5 +163,17 @@ public class PairActivity extends AppCompatActivity {
                 }
             });
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        leave();
+        return true;
+    }
+
+    /** Cerrar la pantalla. Abierta desde «Emparejar de nuevo» queda sola en su tarea: va a la principal. */
+    private void leave() {
+        if (isTaskRoot()) startActivity(new Intent(this, Main2Activity.class));
+        finish();
     }
 }
