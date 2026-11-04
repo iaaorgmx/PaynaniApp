@@ -76,6 +76,12 @@ jobs:
           "$BT/apksigner" verify --print-certs "$APK" | head -3
           sha256sum "$APK" > "$APK.sha256"
           echo "APK=$APK" >> "$GITHUB_ENV"
+          # Con R8 (PaynaniApp#14) las trazas de este APK sólo se leen con su mapping.txt.
+          MAP=app/build/outputs/mapping/release/mapping.txt
+          if [ -f "$MAP" ]; then
+            cp "$MAP" "PaynaniApp-$VERSION-mapping.txt"
+            echo "MAPPING=PaynaniApp-$VERSION-mapping.txt" >> "$GITHUB_ENV"
+          fi
 
       - name: Borrar la llave
         if: always()
@@ -86,6 +92,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           SUM="$(cut -d' ' -f1 "$APK.sha256")"
-          gh release create "$GITHUB_REF_NAME" "$APK" "$APK.sha256" \
+          FILES=("$APK" "$APK.sha256")
+          NOTES="APK firmado. SHA-256: \`$SUM\`. Instalación: INSTALL.md de iaaorgmx/paynani, sección del teléfono."
+          if [ -n "${MAPPING:-}" ]; then
+            FILES+=("$MAPPING")
+            # Para saber qué mapping corresponde a una traza de Play (Metis en #15).
+            NOTES="$NOTES Mapping de R8: \`$MAPPING\`, SHA-256 \`$(sha256sum "$MAPPING" | cut -d' ' -f1)\`."
+          fi
+          gh release create "$GITHUB_REF_NAME" "${FILES[@]}" \
             --title "PaynaniApp $GITHUB_REF_NAME" \
-            --notes "APK firmado. SHA-256: \`$SUM\`. Instalación: INSTALL.md de iaaorgmx/paynani, sección del teléfono."
+            --notes "$NOTES"
