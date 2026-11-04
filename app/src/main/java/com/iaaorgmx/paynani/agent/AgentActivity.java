@@ -286,10 +286,11 @@ public class AgentActivity extends AppCompatActivity implements AgentEvents.List
             rows.addView(none);
             return;
         }
+        // Sin la píldora del estado: en un teléfono PaynaniWeb la oculta y deja sólo la hora
+        // (web.css, `.actividad li .estado` hasta 900 px; Metis en #12).
         for (Agent.Activity act : a.activity) {
-            String state = activityState(act);
             row(rows, nz(act.who), activityWhat(act) + (act.at != null ? " · " + clock(act.at) : ""),
-                    state, AgentRules.TONE_OFF);
+                    null, AgentRules.TONE_OFF);
         }
     }
 
@@ -393,19 +394,6 @@ public class AgentActivity extends AppCompatActivity implements AgentEvents.List
         }
     }
 
-    /** `_act_state` de dashboard_pages.py; null si la web no pone estado. */
-    private String activityState(Agent.Activity a) {
-        String ch = nz(a.channel), st = nz(a.state);
-        boolean closedChat = ("whatsapp".equals(ch) || "telegram".equals(ch) || "webchat".equals(ch))
-                && ("handled".equals(st) || "replied".equals(st) || "closed".equals(st));
-        if ("mail".equals(ch) || closedChat) return label("agent_mail_" + st, st);
-        if ("sent".equals(ch)) return getString(R.string.agent_act_sent);
-        if ("sms".equals(ch) && !"received".equals(st) && !"agent".equals(st) && !"human".equals(st)) {
-            return label("agent_sms_" + st, st);
-        }
-        return null;
-    }
-
     /** Las etiquetas por valor, como los catálogos de PaynaniWeb. Un valor que no está queda tal cual. */
     private static final java.util.Map<String, Integer> LABELS = new java.util.HashMap<>();
 
@@ -422,20 +410,6 @@ public class AgentActivity extends AppCompatActivity implements AgentEvents.List
         LABELS.put("agent_tg_journal_mismatch", R.string.agent_tg_journal_mismatch);
         LABELS.put("agent_tg_stopped", R.string.agent_tg_stopped);
         LABELS.put("agent_tg_service_down", R.string.agent_tg_service_down);
-        LABELS.put("agent_mail_observed", R.string.agent_mail_observed);
-        LABELS.put("agent_mail_dispatched", R.string.agent_mail_dispatched);
-        LABELS.put("agent_mail_presented", R.string.agent_mail_presented);
-        LABELS.put("agent_mail_handled", R.string.agent_mail_handled);
-        LABELS.put("agent_mail_replied", R.string.agent_mail_replied);
-        LABELS.put("agent_mail_closed", R.string.agent_mail_closed);
-        LABELS.put("agent_mail_suppressed", R.string.agent_mail_suppressed);
-        LABELS.put("agent_sms_queued", R.string.agent_sms_queued);
-        LABELS.put("agent_sms_accepted", R.string.agent_sms_accepted);
-        LABELS.put("agent_sms_sent", R.string.agent_sms_sent);
-        LABELS.put("agent_sms_delivered", R.string.agent_sms_delivered);
-        LABELS.put("agent_sms_failed", R.string.agent_sms_failed);
-        LABELS.put("agent_sms_rejected", R.string.agent_sms_rejected);
-        LABELS.put("agent_sms_expired", R.string.agent_sms_expired);
         LABELS.put("agent_channel_mail", R.string.agent_channel_mail);
         LABELS.put("agent_channel_sms", R.string.agent_channel_sms);
         LABELS.put("agent_channel_whatsapp", R.string.agent_channel_whatsapp);
