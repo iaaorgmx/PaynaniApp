@@ -48,8 +48,10 @@ android {
             if (System.getenv("PAYNANI_KEYSTORE_FILE")) {
                 signingConfig signingConfigs.release
             }
-            minifyEnabled false
-            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // R8 reduce y ofusca; el mapping.txt sale dentro del .aab para que Play desofusque fallas y ANR.
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
             minifyEnabled false
