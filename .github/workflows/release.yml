@@ -93,7 +93,12 @@ jobs:
         run: |
           SUM="$(cut -d' ' -f1 "$APK.sha256")"
           FILES=("$APK" "$APK.sha256")
-          if [ -n "${MAPPING:-}" ]; then FILES+=("$MAPPING"); fi
+          NOTES="APK firmado. SHA-256: \`$SUM\`. Instalación: INSTALL.md de iaaorgmx/paynani, sección del teléfono."
+          if [ -n "${MAPPING:-}" ]; then
+            FILES+=("$MAPPING")
+            # Para saber qué mapping corresponde a una traza de Play (Metis en #15).
+            NOTES="$NOTES Mapping de R8: \`$MAPPING\`, SHA-256 \`$(sha256sum "$MAPPING" | cut -d' ' -f1)\`."
+          fi
           gh release create "$GITHUB_REF_NAME" "${FILES[@]}" \
             --title "PaynaniApp $GITHUB_REF_NAME" \
-            --notes "APK firmado. SHA-256: \`$SUM\`. Instalación: INSTALL.md de iaaorgmx/paynani, sección del teléfono."
+            --notes "$NOTES"
