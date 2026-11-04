@@ -1,5 +1,7 @@
 package com.iaaorgmx.paynani.gateway;
 
+import com.iaaorgmx.paynani.agent.AgentEvents;
+import com.iaaorgmx.paynani.agent.GatewayAgent;
 import com.iaaorgmx.paynani.webchat.GatewayWebchatSource;
 import com.iaaorgmx.paynani.webchat.WebchatEvents;
 
@@ -45,6 +47,7 @@ public final class GatewayClient {
         return instance;
     }
 
+    private final Context context;
     private final GatewayPrefs prefs;
     private final Handler handler;
     private final Random random = new Random();
@@ -66,6 +69,7 @@ public final class GatewayClient {
     private final GatewayRequests<JSONObject> requests;
 
     private GatewayClient(Context context) {
+        this.context = context;
         this.prefs = new GatewayPrefs(context);
         HandlerThread t = new HandlerThread("paynani-gateway");
         t.start();
@@ -123,6 +127,7 @@ public final class GatewayClient {
         if (l != null) l.onGatewayState(state());
         // Webchat vacía lo mostrado al perder la conexión y relee al volver.
         WebchatEvents.changed(WebchatEvents.CONNECTION, null);
+        AgentEvents.changed(AgentEvents.CONNECTION);
     }
 
     /** Arranca la conexión si hay emparejamiento. Idempotente. */
@@ -323,6 +328,10 @@ public final class GatewayClient {
                 // Una pasarela anterior a paynani #671 no conoce "sms": false y puede mandar órdenes:
                 // se rechazan en el acto, para que no queden pendientes hasta vencer (Iris en #1).
                 reject(msg.optString("id"));
+                break;
+            case "agent.changed":
+                // paynani #692: el estado nuevo del agente, sin id; la pantalla «Agente» vuelve a pedir agent.get.
+                GatewayAgent.statusChanged(context, msg.optString("status"));
                 break;
             case "error":
                 L.e(TAG, "error de la pasarela: " + msg.optString("code"));

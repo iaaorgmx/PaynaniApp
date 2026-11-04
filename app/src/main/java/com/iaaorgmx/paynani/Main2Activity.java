@@ -23,6 +23,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.navigation.NavigationView;
+import com.iaaorgmx.paynani.agent.AgentActivity;
+import com.iaaorgmx.paynani.agent.AgentEvents;
+import com.iaaorgmx.paynani.agent.AgentRules;
+import com.iaaorgmx.paynani.agent.GatewayAgent;
 import com.iaaorgmx.paynani.gateway.PairActivity;
 import com.iaaorgmx.paynani.webchat.WebchatFragment;
 import com.iaaorgmx.paynani.webchat.WebchatSources;
@@ -32,7 +36,8 @@ import com.iaaorgmx.paynani.webchat.WebchatSources;
  * (PaynaniApp-Agentic#175: esta app sólo hace Webchat). Sin emparejar, Webchat explica qué es
  * paynani y cómo emparejar (#7). Emparejada pero sin Webchat anunciado por la pasarela, abre Estado.
  */
-public class Main2Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class Main2Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        AgentEvents.Listener {
 
     /** La notificación de Webchat (paynani PRD #653 FR-11) abre la conversación. */
     public static final String EXTRA_OPEN = "open";
@@ -83,8 +88,9 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                // La pasarela pudo anunciar Webchat después de abrir la app.
+                // La pasarela pudo anunciar Webchat o agent.get después de abrir la app.
                 updateMenu();
+                refreshAgent();
             }
         };
         drawer.addDrawerListener(toggle);
@@ -117,6 +123,70 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
     private void updateMenu() {
         navigationView.getMenu().findItem(R.id.nav_section_agent)
                 .setVisible(!session.isLoggedIn() || WebchatSources.menuVisible(this));
+        updateAgentRow();
+    }
+
+    /**
+     * El renglón del agente (#11): el robot, el nombre y el punto de color con su estado, en una
+     * línea, como en PaynaniWeb. Sólo emparejada y con una pasarela que anuncia agent.get.
+     */
+    private void updateAgentRow() {
+        MenuItem item = navigationView.getMenu().findItem(R.id.nav_agent);
+        boolean show = session.isLoggedIn() && GatewayAgent.announced(this);
+        item.setVisible(show);
+        if (!show) return;
+        String name = GatewayAgent.cachedName(this);
+        String status = GatewayAgent.cachedStatus(this);
+        item.setTitle(agentTitle(name.isEmpty() ? getString(R.string.agent_title) : name, status));
+    }
+
+    private CharSequence agentTitle(String name, String status) {
+        int res, color;
+        switch (status) {
+            case AgentRules.ONLINE: res = R.string.agent_status_online; color = R.color.status_ok; break;
+            case AgentRules.NO_SESSION: res = R.string.agent_status_no_session; color = R.color.status_warn; break;
+            case AgentRules.OFFLINE: res = R.string.agent_status_offline; color = R.color.status_bad; break;
+            default: res = R.string.agent_status_unknown; color = R.color.status_off;
+        }
+        android.text.SpannableStringBuilder b = new android.text.SpannableStringBuilder(name).append("  ");
+        int start = b.length();
+        b.append("● ").append(getString(res));
+        b.setSpan(new android.text.style.ForegroundColorSpan(ContextCompat.getColor(this, color)), start, b.length(), 0);
+        b.setSpan(new android.text.style.RelativeSizeSpan(0.85f), start, b.length(), 0);
+        return b;
+    }
+
+    @Override
+    public void onAgentChanged(String status) {
+        // Al reconectar se vuelve a pedir agent.get; agent.changed ya trae el estado nuevo.
+        if (AgentEvents.CONNECTION.equals(status)) refreshAgent();
+        else updateAgentRow();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AgentEvents.add(this);
+        refreshAgent();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        AgentEvents.remove(this);
+    }
+
+    /** Pide agent.get para tener el nombre y el estado al día; sin conexión, el renglón dice «Sin datos». */
+    private void refreshAgent() {
+        updateAgentRow();
+        if (!session.isLoggedIn() || !GatewayAgent.announced(this) || !GatewayAgent.connected(this)) return;
+        GatewayAgent.get(this, new GatewayAgent.Callback() {
+            @Override public void onResult(com.iaaorgmx.paynani.agent.Agent agent) {
+                if (!isFinishing()) updateAgentRow();
+            }
+
+            @Override public void onError(String code) {}
+        });
     }
 
     private void show(Fragment fragment, int item) {
@@ -127,7 +197,12 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.nav_webchat) {
+        if (id == R.id.nav_agent) {
+            // Abre otra pantalla: la sección marcada sigue siendo la de antes.
+            startActivity(new Intent(this, AgentActivity.class));
+            drawer.closeDrawer(GravityCompat.START);
+            return false;
+        } else if (id == R.id.nav_webchat) {
             show(session.isLoggedIn() ? new WebchatFragment() : new WelcomeFragment(), id);
         } else if (id == R.id.nav_status) {
             show(new StatusFragment(), id);

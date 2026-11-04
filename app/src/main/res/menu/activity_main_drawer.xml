@@ -11,6 +11,12 @@
             <group
                 android:id="@+id/nav_group_agent"
                 android:checkableBehavior="single">
+                <!-- El agente con su estado (#11): sólo si la pasarela anuncia agent.get. -->
+                <item
+                    android:id="@+id/nav_agent"
+                    android:icon="@drawable/ic_menu_agent"
+                    android:title="@string/agent_title"
+                    android:visible="false" />
                 <item
                     android:id="@+id/nav_webchat"
                     android:icon="@drawable/ic_menu_agent"
