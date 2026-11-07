@@ -16,6 +16,8 @@ public final class WebchatEvents {
     public static final String MESSAGES = "messages";
     public static final String TYPING = "typing";
     public static final String DRAFT = "draft";
+    /** paynani #745 FR-5: cambió una reacción, quizá de un mensaje viejo. */
+    public static final String REACTIONS = "reactions";
     /** No viene de la pasarela: se conectó o se perdió la conexión con ella. */
     public static final String CONNECTION = "connection";
 

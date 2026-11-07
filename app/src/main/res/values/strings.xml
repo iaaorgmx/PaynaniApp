@@ -163,6 +163,26 @@
     <string name="wc_download">Download %1$s</string>
     <string name="wc_no_app">There is no app to open %1$s.</string>
     <string name="wc_error_download">%1$s could not be downloaded.</string>
+    <!-- Citas y reacciones (paynani #745). -->
+    <string name="wc_message_options">Message options</string>
+    <string name="wc_reply">Reply</string>
+    <string name="wc_copy">Copy</string>
+    <string name="wc_copied">Copied</string>
+    <string name="wc_you">You</string>
+    <string name="wc_reply_cancel">Cancel reply</string>
+    <string name="wc_replying_to">Replying to %1$s: %2$s</string>
+    <string name="wc_quote_missing">Message not available</string>
+    <string name="wc_quote_desc">Reply to %1$s: %2$s</string>
+    <string name="wc_quote_not_loaded">The original message is not loaded.</string>
+    <string name="wc_react_with">React with %1$s</string>
+    <string name="wc_more_reactions">Another emoji</string>
+    <string name="wc_reaction_desc">%1$s, %2$d</string>
+    <string name="wc_reaction_desc_mine">%1$s, %2$d, including yours</string>
+    <string name="wc_reaction_remove">remove your reaction</string>
+    <string name="wc_emoji_title">React with another emoji</string>
+    <string name="wc_emoji_hint">One emoji</string>
+    <string name="wc_error_bad_emoji">Choose a single emoji.</string>
+    <string name="wc_error_react">The reaction could not be saved (%1$s).</string>
     <string name="wc_notification_channel">Webchat</string>
     <string name="wc_notification_channel_desc">When your agent replies in Webchat</string>
     <string name="wc_notification_title_default">Your agent</string>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- La cita (paynani #745 FR-11, FR-12): una franja grana a la izquierda sobre un fondo tenue, como
+     la cita de PaynaniWeb y la de WhatsApp. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#14000000" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+    <item
+        android:gravity="start|fill_vertical"
+        android:width="3dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/paynani_grana" />
+            <corners
+                android:bottomLeftRadius="8dp"
+                android:topLeftRadius="8dp" />
+        </shape>
+    </item>
+</layer-list>

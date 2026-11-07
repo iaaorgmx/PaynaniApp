@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Una reacción debajo de la burbuja (paynani #745 FR-10): el emoji y su número si son más de uno. -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="4dp"
+    android:background="@drawable/wc_reaction_bg"
+    android:gravity="center"
+    android:minWidth="36dp"
+    android:minHeight="28dp"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:textColor="@color/paynani_tinta"
+    android:textSize="14sp" />

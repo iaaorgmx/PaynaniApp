@@ -317,6 +317,9 @@ public final class GatewayClient {
                 prefs.setLastConnected(System.currentTimeMillis());
                 prefs.setAccepts(msg.optJSONArray("accepts"));
                 prefs.setGrants(msg.optJSONArray("grants"));
+                // paynani #745: citas y reacciones se saben en el primer webchat.thread de esta
+                // conexión; hasta entonces no, por si ahora es otro paynani o uno anterior.
+                prefs.setWebchatFeatures(false, false);
                 prefs.setServerVersion(msg.optString("server_version", ""));
                 notifyState();
                 break;

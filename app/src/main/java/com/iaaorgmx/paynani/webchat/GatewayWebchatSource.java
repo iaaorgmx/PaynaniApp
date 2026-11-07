@@ -67,21 +67,47 @@ public final class GatewayWebchatSource implements WebchatSource {
     }
 
     @Override
+    public boolean canReply() {
+        return available() && new GatewayPrefs(context).webchatReplies();
+    }
+
+    @Override
+    public boolean canReact() {
+        GatewayPrefs prefs = new GatewayPrefs(context);
+        return available() && prefs.accepts("webchat.react") && prefs.webchatReactions();
+    }
+
+    @Override
     public void thread(String after, String before, Callback<Thread> cb) {
         JSONObject m = msg("webchat.thread");
         put(m, "limit", PAGE);
         if (after != null) put(m, "after", after);
         if (before != null) put(m, "before", before);
-        ask("webchat.thread", m, cb, GatewayWebchatSource::thread);
+        ask("webchat.thread", m, cb, d -> {
+            Thread t = thread(d);
+            // #745: replies y reactions vienen en cada webchat.thread, como en GetWebchatThread.
+            new GatewayPrefs(context).setWebchatFeatures(t.replies, t.reactions);
+            return t;
+        });
     }
 
     @Override
-    public void send(String text, List<String> uploads, Callback<Message> cb) {
+    public void send(String text, List<String> uploads, String replyTo, Callback<Message> cb) {
         JSONObject m = msg("webchat.send");
         put(m, "text", text == null ? "" : text);
         // SMS_GATEWAY.md §13: los up_… de POST /sms/webchat/upload.
         put(m, "uploads", new JSONArray(uploads == null ? new ArrayList<>() : uploads));
+        // #745 FR-3: sólo si este paynani cita; uno anterior lo ignoraría sin decir nada.
+        if (replyTo != null && !replyTo.isEmpty() && canReply()) put(m, "reply_to", replyTo);
         ask("webchat.send", m, cb, d -> message(d.has("message") ? d.getJSONObject("message") : d));
+    }
+
+    @Override
+    public void react(String ref, String emoji, Callback<List<Reaction>> cb) {
+        JSONObject m = msg("webchat.react");
+        put(m, "ref", ref);
+        put(m, "emoji", emoji == null ? "" : emoji);
+        ask("webchat.react", m, cb, d -> reactions(d.optJSONArray("reactions")));
     }
 
     @Override
@@ -124,7 +150,25 @@ public final class GatewayWebchatSource implements WebchatSource {
         List<FileRef> files = new ArrayList<>();
         JSONArray a = o.optJSONArray("files");
         for (int i = 0; a != null && i < a.length(); i++) files.add(fileRef(a.getJSONObject(i)));
-        return new Message(o.optString("id"), o.optString("dir"), o.optString("at"), o.optString("text"), files);
+        return new Message(o.optString("id"), o.optString("dir"), o.optString("at"), o.optString("text"), files,
+                replyTo(o.optJSONObject("reply_to")), reactions(o.optJSONArray("reactions")));
+    }
+
+    /** #745 FR-2: {ref, name, excerpt, missing}, como el almacén (WEBCHAT.md); null si no es respuesta. */
+    static ReplyTo replyTo(JSONObject o) {
+        if (o == null) return null;
+        return new ReplyTo(nullable(o, "ref"), o.optString("name"), o.optString("excerpt"), o.optBoolean("missing"));
+    }
+
+    /** #745 FR-2: [{emoji, count, mine}]; las que no traen emoji se ignoran. */
+    static List<Reaction> reactions(JSONArray a) {
+        List<Reaction> out = new ArrayList<>();
+        for (int i = 0; a != null && i < a.length(); i++) {
+            JSONObject r = a.optJSONObject(i);
+            if (r == null || r.optString("emoji").isEmpty()) continue;
+            out.add(new Reaction(r.optString("emoji"), r.optInt("count", 1), r.optBoolean("mine")));
+        }
+        return out;
     }
 
     /** FR-3: los mensajes (en cualquier orden: Thread los ordena), typing, el borrador y el agente. */
@@ -133,7 +177,7 @@ public final class GatewayWebchatSource implements WebchatSource {
         JSONArray a = d.optJSONArray("messages");
         for (int i = 0; a != null && i < a.length(); i++) out.add(message(a.getJSONObject(i)));
         return new Thread(out, nullable(d, "next_before"), d.optBoolean("typing"), draftText(d.opt("draft")),
-                agentName(d));
+                agentName(d), d.optBoolean("replies"), d.optBoolean("reactions"));
     }
 
     /** El borrador viene como {"text", "at"} (WEBCHAT.md §4) o como texto; null si no hay. */

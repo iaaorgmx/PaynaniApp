@@ -31,6 +31,9 @@
             android:textStyle="bold"
             android:visibility="gone" />
 
+        <!-- La cita de una respuesta (paynani #745 FR-12): quién y una línea. Tocarla lleva al original. -->
+        <include layout="@layout/webchat_quote" />
+
         <!-- Las fotos se ven aquí; los demás archivos, como tarjeta para descargar. -->
         <LinearLayout
             android:id="@+id/wc_files"
@@ -45,9 +48,17 @@
             android:autoLink="web|phone"
             android:textColor="@color/paynani_tinta"
             android:textColorLink="@color/paynani_tinta"
-            android:textIsSelectable="true"
             android:textSize="16sp" />
     </LinearLayout>
+
+    <!-- Las reacciones (paynani #745 FR-10): cada emoji con su número; la del dueño, resaltada. -->
+    <LinearLayout
+        android:id="@+id/wc_reactions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:orientation="horizontal"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/wc_meta"

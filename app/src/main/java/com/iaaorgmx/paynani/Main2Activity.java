@@ -203,7 +203,8 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
             drawer.closeDrawer(GravityCompat.START);
             return false;
         } else if (id == R.id.nav_webchat) {
-            show(session.isLoggedIn() ? new WebchatFragment() : new WelcomeFragment(), id);
+            // El modo de prueba (sólo depuración) abre Webchat aunque el teléfono no esté emparejado.
+            show(session.isLoggedIn() || WebchatSources.demoEnabled(this) ? new WebchatFragment() : new WelcomeFragment(), id);
         } else if (id == R.id.nav_status) {
             show(new StatusFragment(), id);
         } else if (id == R.id.nav_home) {

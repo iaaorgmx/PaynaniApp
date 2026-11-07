@@ -1,12 +1,17 @@
 package com.iaaorgmx.paynani.webchat;
 
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,9 +20,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.Formatter;
 import android.util.LruCache;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -25,13 +34,17 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import androidx.fragment.app.Fragment;
 
 import com.iaaorgmx.paynani.R;
@@ -109,7 +122,16 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
     private View composeView;
     private EditText input;
     private ImageButton send;
+    private View replyBar;
+    private TextView replyName;
+    private TextView replyText;
     private final Adapter adapter = new Adapter();
+
+    /** El mensaje que se va a citar (#745 FR-11), o null. */
+    private WebchatSource.Message replyingTo;
+    /** El mensaje resaltado un momento al tocar su cita (FR-12), o null. */
+    private String highlightId;
+    private PopupWindow menu;
 
     private List<WebchatSource.Message> messages = new ArrayList<>();
     private String nextBefore;
@@ -147,6 +169,10 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
         composeView = v.findViewById(R.id.wc_compose);
         input = v.findViewById(R.id.wc_input);
         send = v.findViewById(R.id.wc_send);
+        replyBar = v.findViewById(R.id.wc_reply_bar);
+        replyName = v.findViewById(R.id.wc_reply_name);
+        replyText = v.findViewById(R.id.wc_reply_text);
+        v.findViewById(R.id.wc_reply_close).setOnClickListener(x -> clearReply());
         v.findViewById(R.id.wc_attach).setOnClickListener(x -> picker.launch(PICK_TYPES));
         send.setOnClickListener(x -> send());
         input.addTextChangedListener(new TextWatcher() {
@@ -190,6 +216,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
     @Override
     public void onPause() {
         super.onPause();
+        dismissMenu();
         WebchatEvents.remove(this);
         WebchatNotifier.setScreenVisible(requireContext(), false);
         readGate.close();
@@ -218,6 +245,9 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
                 if (draft != null) typing = true;
                 showTyping();
                 adapter.notifyDataSetChanged();
+                break;
+            case WebchatEvents.REACTIONS:
+                reloadReactions();
                 break;
             default:
                 refresh();
@@ -294,6 +324,29 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
         });
     }
 
+    /**
+     * #745 FR-5: una reacción cambió, quizá en un mensaje viejo, y refresh() sólo trae lo posterior.
+     * Se vuelve a pedir la última página y se reemplazan por id los mensajes que ya se ven, sin
+     * mover la lista. Una reacción en un mensaje anterior a esa página se ve al volver a abrir.
+     */
+    private void reloadReactions() {
+        if (messages.isEmpty() || !source.available()) return;
+        int t = readGate.current();
+        source.thread(null, null, new WebchatSource.Callback<WebchatSource.Thread>() {
+            @Override
+            public void onResult(WebchatSource.Thread th) {
+                if (!readGate.accepts(t) || !isAdded()) return;
+                messages = new ArrayList<>(WebchatRules.merge(messages, th.messages));
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(WebchatSource.Failure f) {
+                // El siguiente aviso o la siguiente lectura las trae.
+            }
+        });
+    }
+
     /** «Mensajes anteriores»: al llegar arriba de la lista. */
     private void loadOlder() {
         if (loadingOlder || nextBefore == null || !source.available()) return;
@@ -333,6 +386,8 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
         nextBefore = null;
         typing = false;
         draft = null;
+        dismissMenu();
+        clearReply();
         showTyping();
         adapter.notifyDataSetChanged();
         composeView.setVisibility(View.GONE);
@@ -430,7 +485,9 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
 
     private void uploadNext(int t, List<Pending> files, int i, List<String> refs, String text) {
         if (i == files.size()) {
-            source.send(text, refs, new WebchatSource.Callback<WebchatSource.Message>() {
+            // FR-11: la cita va con el mensaje; si se quitó mientras subían los archivos, ya no va.
+            String quoted = replyingTo == null ? null : replyingTo.id;
+            source.send(text, refs, quoted, new WebchatSource.Callback<WebchatSource.Message>() {
                 @Override
                 public void onResult(WebchatSource.Message m) {
                     if (!sendGate.accepts(t) || !isAdded()) return;
@@ -438,6 +495,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
                     input.setText("");
                     pending.clear();
                     showPending();
+                    clearReply();
                     messages = new ArrayList<>(WebchatRules.merge(messages, java.util.Collections.singletonList(m)));
                     stateView.setVisibility(View.GONE);
                     adapter.notifyDataSetChanged();
@@ -482,6 +540,287 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
         if ("bad_upload".equals(f.code)) for (Pending p : pending) p.upload = null;
         updateSend();
         toast(sendProblemText(f.code));
+    }
+
+    // --- Citas y reacciones (paynani #745) ---------------------------------------------------
+
+    /** FR-11: la barra de cita arriba del cuadro de texto; el mensaje sale con reply_to. */
+    private void startReply(WebchatSource.Message m) {
+        if (!source.canReply() || !isAdded()) return;
+        replyingTo = m;
+        String name = m.mine() ? getString(R.string.wc_you) : agentLabel();
+        String line = WebchatRules.excerpt(m);
+        replyName.setText(name);
+        replyText.setText(line);
+        replyBar.setContentDescription(getString(R.string.wc_replying_to, name, line));
+        replyBar.setVisibility(View.VISIBLE);
+        input.requestFocus();
+        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    private void clearReply() {
+        replyingTo = null;
+        if (replyBar != null) replyBar.setVisibility(View.GONE);
+    }
+
+    /**
+     * FR-8: el menú de un mensaje, arriba de la burbuja si cabe y si no abajo, alineado con ella.
+     * La fila de reacciones sólo si este paynani reacciona, «Reply» sólo si cita (FR-14) y «Copy»
+     * sólo si hay texto (FR-13). Sin nada que ofrecer no se abre.
+     */
+    @android.annotation.SuppressLint("InflateParams")   // el contenido de un PopupWindow no tiene padre
+    private void openMenu(View bubble, WebchatSource.Message m) {
+        if (!isAdded()) return;
+        dismissMenu();
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        View content = inflater.inflate(R.layout.webchat_menu, null, false);
+        LinearLayout row = content.findViewById(R.id.wc_menu_reactions);
+        boolean react = source.canReact();
+        if (react) {
+            String mine = m.myReaction();
+            for (String e : WebchatRules.QUICK_REACTIONS) {
+                row.addView(emojiButton(row, e, e.equals(mine), () -> react(m, WebchatRules.reactionChoice(mine, e))));
+            }
+            TextView more = emojiButton(row, "+", false, () -> askEmoji(m));
+            more.setContentDescription(getString(R.string.wc_more_reactions));
+            more.setTextColor(getResources().getColor(R.color.paynani_gris, null));
+            row.addView(more);
+        } else {
+            row.setVisibility(View.GONE);
+        }
+        View reply = content.findViewById(R.id.wc_menu_reply);
+        boolean canReply = source.canReply();
+        reply.setVisibility(canReply ? View.VISIBLE : View.GONE);
+        reply.setOnClickListener(x -> {
+            dismissMenu();
+            startReply(m);
+        });
+        View copy = content.findViewById(R.id.wc_menu_copy);
+        boolean canCopy = !m.text.isEmpty();
+        copy.setVisibility(canCopy ? View.VISIBLE : View.GONE);
+        copy.setOnClickListener(x -> {
+            dismissMenu();
+            copy(m);
+        });
+        if (!canReply && !canCopy) content.findViewById(R.id.wc_menu_actions).setVisibility(View.GONE);
+        if (!react && !canReply && !canCopy) return;
+
+        PopupWindow pw = new PopupWindow(content, ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        pw.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        pw.setOutsideTouchable(true);
+        content.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        int w = content.getMeasuredWidth();
+        int h = content.getMeasuredHeight();
+        int[] at = new int[2];
+        bubble.getLocationInWindow(at);
+        int[] listAt = new int[2];
+        list.getLocationInWindow(listAt);
+        int margin = dp(8);
+        int screenW = list.getRootView().getWidth();
+        int x = m.mine() ? at[0] + bubble.getWidth() - w : at[0];
+        x = Math.max(margin, Math.min(x, screenW - w - margin));
+        // Arriba de la burbuja si cabe dentro de la lista; si no, debajo.
+        int y = at[1] - h - margin >= listAt[1] ? at[1] - h - margin : at[1] + bubble.getHeight() + margin;
+        pw.showAtLocation(list, Gravity.NO_GRAVITY, x, y);
+        menu = pw;
+    }
+
+    private void dismissMenu() {
+        if (menu != null) menu.dismiss();
+        menu = null;
+    }
+
+    /** Un emoji de la fila del menú (FR-9); el del dueño, resaltado. */
+    private TextView emojiButton(ViewGroup parent, String emoji, boolean selected, Runnable pick) {
+        TextView b = new TextView(parent.getContext());
+        b.setText(emoji);
+        // Los 8 (7 y el «+») caben a lo ancho en un teléfono de 360 dp.
+        b.setTextSize(22);
+        b.setGravity(Gravity.CENTER);
+        b.setMinWidth(dp(40));
+        b.setMinimumWidth(dp(40));
+        b.setMinHeight(dp(44));
+        b.setPadding(0, 0, 0, 0);
+        if (selected) {
+            b.setBackgroundResource(R.drawable.wc_reaction_mine_bg);
+        } else {
+            android.util.TypedValue tv = new android.util.TypedValue();
+            parent.getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackgroundBorderless, tv, true);
+            b.setBackgroundResource(tv.resourceId);
+        }
+        b.setContentDescription(getString(R.string.wc_react_with, emoji));
+        b.setSelected(selected);
+        b.setOnClickListener(x -> {
+            dismissMenu();
+            pick.run();
+        });
+        return b;
+    }
+
+    /** El «+» (FR-9, Q133 = A): un campo para un emoji, con el teclado de emojis del teléfono. */
+    private void askEmoji(WebchatSource.Message m) {
+        if (!isAdded()) return;
+        EditText field = new EditText(requireContext());
+        field.setHint(R.string.wc_emoji_hint);
+        field.setSingleLine(true);
+        field.setGravity(Gravity.CENTER);
+        field.setTextSize(28);
+        LinearLayout box = new LinearLayout(requireContext());
+        box.setPadding(dp(24), dp(8), dp(24), 0);
+        box.addView(field, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        AlertDialog dialog = new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.wc_emoji_title)
+                .setView(box)
+                .setPositiveButton(android.R.string.ok, (d, which) -> {
+                    String e = field.getText().toString().trim();
+                    if (!WebchatRules.singleEmoji(e)) {
+                        toast(getString(R.string.wc_error_bad_emoji));
+                        return;
+                    }
+                    react(m, WebchatRules.reactionChoice(m.myReaction(), e));
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .create();
+        dialog.setOnShowListener(d -> {
+            field.requestFocus();
+            InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) imm.showSoftInput(field, InputMethodManager.SHOW_IMPLICIT);
+        });
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+        dialog.show();
+    }
+
+    /** FR-9, FR-10: webchat.react; la burbuja se vuelve a dibujar con lo que respondió paynani. */
+    private void react(WebchatSource.Message m, String emoji) {
+        if (!source.canReact()) return;
+        int t = readGate.current();
+        source.react(m.id, emoji, new WebchatSource.Callback<List<WebchatSource.Reaction>>() {
+            @Override
+            public void onResult(List<WebchatSource.Reaction> reactions) {
+                if (!readGate.accepts(t) || !isAdded()) return;
+                int i = WebchatRules.indexOf(messages, m.id);
+                if (i < 0) return;
+                messages = new ArrayList<>(messages);
+                messages.set(i, messages.get(i).withReactions(reactions));
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(WebchatSource.Failure f) {
+                if (!readGate.accepts(t) || !isAdded()) return;
+                switch (f.code) {
+                    case "bad_emoji":
+                        toast(getString(R.string.wc_error_bad_emoji));
+                        break;
+                    case "offline":
+                    case "timeout":
+                        toast(getString(R.string.wc_offline));
+                        break;
+                    case "rate_limited":
+                        toast(getString(R.string.wc_error_rate_limited));
+                        break;
+                    default:
+                        toast(getString(R.string.wc_error_react, f.code));
+                        break;
+                }
+            }
+        });
+    }
+
+    /** FR-13: el texto al portapapeles. Desde Android 13 el sistema ya dice que se copió. */
+    private void copy(WebchatSource.Message m) {
+        ClipboardManager cm = (ClipboardManager) requireContext().getSystemService(Context.CLIPBOARD_SERVICE);
+        if (cm == null) return;
+        cm.setPrimaryClip(ClipData.newPlainText(getString(R.string.wc_notification_channel), m.text));
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            Toast.makeText(requireContext(), R.string.wc_copied, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /** FR-12: tocar una cita lleva al original si está cargado y lo resalta un momento. */
+    private void jumpTo(String ref) {
+        if (WebchatRules.indexOf(messages, ref) < 0) {
+            toast(getString(R.string.wc_quote_not_loaded));
+            return;
+        }
+        int row = adapter.rowOf(ref);
+        if (row < 0) return;
+        list.setSelection(Math.max(0, row - 1));
+        highlightId = ref;
+        adapter.notifyDataSetChanged();
+        main.postDelayed(() -> {
+            if (!ref.equals(highlightId) || !isAdded()) return;
+            highlightId = null;
+            adapter.notifyDataSetChanged();
+        }, 1500);
+    }
+
+    private int dp(int value) {
+        return Math.round(value * getResources().getDisplayMetrics().density);
+    }
+
+    /**
+     * FR-11: deslizar una burbuja a la derecha abre la cita, como en WhatsApp. Va en la burbuja y en
+     * lo que tiene adentro (el texto con enlaces y los archivos atrapan el toque); hasta que el
+     * dedo se mueve de lado no toma nada, así que el toque largo y los enlaces siguen igual.
+     */
+    private final class SwipeToReply implements View.OnTouchListener {
+        private final View bubble;
+        private final WebchatSource.Message message;
+        private final int slop;
+        private float downX;
+        private float downY;
+        private boolean swiping;
+
+        SwipeToReply(View bubble, WebchatSource.Message message) {
+            this.bubble = bubble;
+            this.message = message;
+            this.slop = ViewConfiguration.get(bubble.getContext()).getScaledTouchSlop();
+        }
+
+        // No toma toques: devuelve false hasta que el dedo va de lado, así que un toque sigue
+        // siendo un click normal de la vista (con performClick) y TalkBack no cambia.
+        @android.annotation.SuppressLint("ClickableViewAccessibility")
+        @Override
+        public boolean onTouch(View v, MotionEvent e) {
+            switch (e.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN:
+                    downX = e.getRawX();
+                    downY = e.getRawY();
+                    swiping = false;
+                    return false;
+                case MotionEvent.ACTION_MOVE: {
+                    float dx = e.getRawX() - downX;
+                    float dy = e.getRawY() - downY;
+                    if (!swiping && dx > slop && dx > Math.abs(dy) * 2) {
+                        swiping = true;
+                        v.cancelLongPress();
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                    }
+                    if (!swiping) return false;
+                    bubble.setTranslationX(Math.min(Math.max(0, dx), dp(96)));
+                    return true;
+                }
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL: {
+                    if (!swiping) return false;
+                    swiping = false;
+                    boolean far = bubble.getTranslationX() >= dp(64);
+                    bubble.animate().translationX(0).setDuration(150).start();
+                    v.getParent().requestDisallowInterceptTouchEvent(false);
+                    if (far && e.getActionMasked() == MotionEvent.ACTION_UP) startReply(message);
+                    return true;
+                }
+                default:
+                    return swiping;
+            }
+        }
     }
 
     // --- Archivos de la conversación ---------------------------------------------------------
@@ -637,6 +976,7 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
     }
 
     /** Las filas: un separador por día, los mensajes y, al final, la burbuja del borrador. */
+    @android.annotation.SuppressLint("ClickableViewAccessibility")   // SwipeToReply no toma toques (ver ahí)
     private final class Adapter extends BaseAdapter {
         private static final int SEPARATOR = 0;
         private static final int MINE = 1;
@@ -655,6 +995,15 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
         }
 
         private List<Object> rows = new ArrayList<>();
+
+        /** La fila del mensaje id, o -1 (FR-12). */
+        int rowOf(String id) {
+            for (int i = 0; i < rows.size(); i++) {
+                Object row = rows.get(i);
+                if (row instanceof WebchatSource.Message && ((WebchatSource.Message) row).id.equals(id)) return i;
+            }
+            return -1;
+        }
 
         @Override
         public void notifyDataSetChanged() {
@@ -711,9 +1060,12 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
             LinearLayout files = view.findViewById(R.id.wc_files);
             TextView text = view.findViewById(R.id.wc_text);
             TextView meta = view.findViewById(R.id.wc_meta);
+            View bubble = view.findViewById(R.id.wc_bubble);
             files.removeAllViews();
             if (row instanceof String) {
-                // El borrador (Q325): lo que el agente lleva escrito, todavía sin hora.
+                // El borrador (Q325): lo que el agente lleva escrito, todavía sin hora. Sin menú,
+                // cita ni reacciones (FR-8): todavía no es un mensaje.
+                unbind(view, bubble, text);
                 name.setVisibility(View.VISIBLE);
                 name.setText(agentLabel());
                 text.setVisibility(View.VISIBLE);
@@ -724,29 +1076,127 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
             WebchatSource.Message m = (WebchatSource.Message) row;
             name.setVisibility(m.mine() ? View.GONE : View.VISIBLE);
             name.setText(agentLabel());
-            for (WebchatSource.FileRef f : m.files) files.addView(fileView(inflater, files, f));
+            View.OnLongClickListener longPress = x -> {
+                openMenu(bubble, m);
+                return true;
+            };
+            View.OnTouchListener swipe = source.canReply() ? new SwipeToReply(bubble, m) : null;
+            for (WebchatSource.FileRef f : m.files) files.addView(fileView(inflater, files, f, longPress, swipe));
             text.setVisibility(m.text.isEmpty() ? View.GONE : View.VISIBLE);
             text.setText(m.text);
             long at = WebchatRules.parseIso(m.at);
             meta.setText(at > 0 ? time(parent.getContext(), at) : "");
+            bindQuote(view, m, longPress, swipe);
+            bindReactions(view, m);
+            // FR-8: tocar y mantener la burbuja (o su texto) abre el menú; FR-11: deslizar cita.
+            bubble.setOnLongClickListener(longPress);
+            text.setOnLongClickListener(longPress);
+            bubble.setOnTouchListener(swipe);
+            text.setOnTouchListener(swipe);
+            bubble.setTranslationX(0);
+            // FR-15: la acción de TalkBack «Opciones del mensaje», también abre el menú.
+            ViewCompat.replaceAccessibilityAction(bubble, AccessibilityActionCompat.ACTION_LONG_CLICK,
+                    getString(R.string.wc_message_options), (v, args) -> {
+                        openMenu(bubble, m);
+                        return true;
+                    });
+            // FR-12: el original, resaltado un momento.
+            view.setBackgroundColor(m.id.equals(highlightId) ? 0x1f8f2d2b : Color.TRANSPARENT);
             return view;
         }
 
-        private View fileView(LayoutInflater inflater, ViewGroup parent, WebchatSource.FileRef f) {
+        /** Una fila reciclada que ahora es el borrador: sin nada de un mensaje. */
+        private void unbind(View view, View bubble, TextView text) {
+            view.findViewById(R.id.wc_quote).setVisibility(View.GONE);
+            LinearLayout reactions = view.findViewById(R.id.wc_reactions);
+            reactions.removeAllViews();
+            reactions.setVisibility(View.GONE);
+            bubble.setOnLongClickListener(null);
+            bubble.setLongClickable(false);
+            text.setOnLongClickListener(null);
+            text.setLongClickable(false);
+            bubble.setOnTouchListener(null);
+            text.setOnTouchListener(null);
+            bubble.setTranslationX(0);
+            ViewCompat.replaceAccessibilityAction(bubble, AccessibilityActionCompat.ACTION_LONG_CLICK, null, null);
+            view.setBackgroundColor(Color.TRANSPARENT);
+        }
+
+        /** FR-12: la cita dentro de la respuesta; una missing dice «Mensaje no disponible» y no lleva a nada. */
+        private void bindQuote(View view, WebchatSource.Message m, View.OnLongClickListener longPress,
+                               View.OnTouchListener swipe) {
+            View quote = view.findViewById(R.id.wc_quote);
+            WebchatSource.ReplyTo r = m.replyTo;
+            if (r == null) {
+                quote.setVisibility(View.GONE);
+                return;
+            }
+            quote.setVisibility(View.VISIBLE);
+            TextView qName = view.findViewById(R.id.wc_quote_name);
+            TextView qText = view.findViewById(R.id.wc_quote_text);
+            String line = r.missing ? getString(R.string.wc_quote_missing) : r.excerpt;
+            qName.setVisibility(r.missing || r.name.isEmpty() ? View.GONE : View.VISIBLE);
+            qName.setText(r.name);
+            qText.setText(line);
+            quote.setContentDescription(getString(R.string.wc_quote_desc, r.name, line));
+            if (r.missing) {
+                quote.setOnClickListener(null);
+                quote.setClickable(false);
+            } else {
+                quote.setOnClickListener(x -> jumpTo(r.ref));
+            }
+            quote.setOnLongClickListener(longPress);
+            quote.setOnTouchListener(swipe);
+        }
+
+        /**
+         * FR-10: cada emoji con su número si son más de uno; la del dueño resaltada, y tocarla la
+         * quita. TalkBack lee «👍, 2, incluida la tuya» (FR-15).
+         */
+        private void bindReactions(View view, WebchatSource.Message m) {
+            LinearLayout box = view.findViewById(R.id.wc_reactions);
+            box.removeAllViews();
+            box.setVisibility(m.reactions.isEmpty() ? View.GONE : View.VISIBLE);
+            LayoutInflater inflater = LayoutInflater.from(box.getContext());
+            for (WebchatSource.Reaction r : m.reactions) {
+                TextView chip = (TextView) inflater.inflate(R.layout.webchat_reaction, box, false);
+                chip.setText(r.count > 1 ? r.emoji + " " + r.count : r.emoji);
+                chip.setContentDescription(getString(r.mine ? R.string.wc_reaction_desc_mine
+                        : R.string.wc_reaction_desc, r.emoji, r.count));
+                if (r.mine) {
+                    chip.setBackgroundResource(R.drawable.wc_reaction_mine_bg);
+                    if (source.canReact()) {
+                        chip.setOnClickListener(x -> react(m, ""));
+                        ViewCompat.replaceAccessibilityAction(chip, AccessibilityActionCompat.ACTION_CLICK,
+                                getString(R.string.wc_reaction_remove), null);
+                    }
+                }
+                box.addView(chip);
+            }
+        }
+
+        private View fileView(LayoutInflater inflater, ViewGroup parent, WebchatSource.FileRef f,
+                              View.OnLongClickListener longPress, View.OnTouchListener swipe) {
+            View out;
             if (f.image()) {
                 ImageView photo = (ImageView) inflater.inflate(R.layout.webchat_photo, parent, false);
                 photo.setContentDescription(f.name);
                 showPhoto(photo, f);
                 photo.setOnClickListener(x -> open(f));
-                return photo;
+                out = photo;
+            } else {
+                View card = inflater.inflate(R.layout.webchat_file, parent, false);
+                ((TextView) card.findViewById(R.id.wc_file_name)).setText(f.name);
+                ((TextView) card.findViewById(R.id.wc_file_size)).setText(
+                        Formatter.formatShortFileSize(parent.getContext(), f.size));
+                card.setContentDescription(getString(R.string.wc_download, f.name));
+                card.setOnClickListener(x -> open(f));
+                out = card;
             }
-            View card = inflater.inflate(R.layout.webchat_file, parent, false);
-            ((TextView) card.findViewById(R.id.wc_file_name)).setText(f.name);
-            ((TextView) card.findViewById(R.id.wc_file_size)).setText(
-                    Formatter.formatShortFileSize(parent.getContext(), f.size));
-            card.setContentDescription(getString(R.string.wc_download, f.name));
-            card.setOnClickListener(x -> open(f));
-            return card;
+            // FR-8, FR-11: sobre una foto o un archivo, el toque largo y el deslizar también valen.
+            out.setOnLongClickListener(longPress);
+            out.setOnTouchListener(swipe);
+            return out;
         }
     }
 

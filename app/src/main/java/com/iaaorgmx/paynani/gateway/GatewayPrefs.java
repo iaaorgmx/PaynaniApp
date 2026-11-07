@@ -103,6 +103,14 @@ public final class GatewayPrefs {
         return false;
     }
 
+    // Si este paynani cita y reacciona en Webchat, del último webchat.thread (paynani #745 FR-1,
+    // como GetWebchatThread de la API del dueño). Una pasarela anterior no lo dice: false.
+    public void setWebchatFeatures(boolean replies, boolean reactions) {
+        prefs.edit().putBoolean("webchat_replies", replies).putBoolean("webchat_reactions", reactions).apply();
+    }
+    public boolean webchatReplies() { return prefs.getBoolean("webchat_replies", false); }
+    public boolean webchatReactions() { return prefs.getBoolean("webchat_reactions", false); }
+
     // La versión de paynani que anunció el último welcome, o "" si la pasarela no la
     // informa. Para mostrarla en Estado.
     public void setServerVersion(String version) {
