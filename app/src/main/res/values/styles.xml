@@ -56,4 +56,18 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+    <!-- Una acción del menú de un mensaje de Webchat (paynani #745 FR-8). Sólo atributos del
+         framework: el menú se infla con el tema de la actividad (AppTheme), no con el M3. -->
+    <style name="WebchatMenuItem" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:textColor">@color/paynani_tinta</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

@@ -193,4 +193,84 @@ public final class WebchatRules {
             return 0;
         }
     }
+
+    // --- Citas y reacciones (paynani #745) ------------------------------------------------------
+
+    /** La fila del menú (FR-9): los mismos 7 de PaynaniWeb, en su orden (web/msgmenu.py ROW). */
+    public static final List<String> QUICK_REACTIONS = Collections.unmodifiableList(
+            Arrays.asList("👍", "👌", "❤️", "👀", "🔥", "😭", "👎"));
+
+    /**
+     * Lo que se manda a webchat.react al elegir picked (FR-9): una reacción del dueño por mensaje,
+     * así que elegir la que ya tiene la quita ("") y otra la reemplaza.
+     */
+    public static String reactionChoice(String current, String picked) {
+        if (picked == null || picked.isEmpty()) return "";
+        return picked.equals(current) ? "" : picked;
+    }
+
+    /**
+     * Si s es un solo emoji, para el «+» (FR-9): una bandera (dos indicadores regionales), un keycap
+     * (1️⃣), o un símbolo con lo que se le puede pegar: selector de variación, tono de piel,
+     * etiquetas y otros símbolos unidos con ZWJ. Se revisa a mano y no con BreakIterator, que no
+     * junta igual los tonos de piel en todas las versiones de Java. La pasarela lo vuelve a revisar
+     * (bad_emoji); esto sólo evita mandar texto.
+     */
+    public static boolean singleEmoji(String s) {
+        if (s == null) return false;
+        int[] cp = s.trim().codePoints().toArray();
+        if (cp.length == 0) return false;
+        if (regional(cp[0])) return cp.length == 2 && regional(cp[1]);
+        if (cp[0] == '#' || cp[0] == '*' || (cp[0] >= '0' && cp[0] <= '9')) {
+            return (cp.length == 2 && cp[1] == 0x20E3) || (cp.length == 3 && cp[1] == 0xFE0F && cp[2] == 0x20E3);
+        }
+        if (!pictograph(cp[0])) return false;
+        for (int i = 1; i < cp.length; i++) {
+            int c = cp[i];
+            if (c == 0xFE0F || skinTone(c) || (c >= 0xE0020 && c <= 0xE007F)) continue;
+            if (c == 0x200D && i + 1 < cp.length && pictograph(cp[i + 1])) {
+                i++;
+                continue;
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean regional(int c) {
+        return c >= 0x1F1E6 && c <= 0x1F1FF;
+    }
+
+    private static boolean skinTone(int c) {
+        return c >= 0x1F3FB && c <= 0x1F3FF;
+    }
+
+    /** Un símbolo que puede ser la base de un emoji: no letra, dígito, espacio ni puntuación. */
+    private static boolean pictograph(int c) {
+        if (skinTone(c) || regional(c) || c == 0x200D || c == 0xFE0F) return false;
+        int type = Character.getType(c);
+        return type == Character.OTHER_SYMBOL || type == Character.MATH_SYMBOL && c > 0x2000
+                || (c >= 0x1F000 && c <= 0x1FAFF) || (c >= 0x2600 && c <= 0x27BF);
+    }
+
+    /** La posición del mensaje id en messages, o -1 si no está cargado (FR-12). */
+    public static int indexOf(List<WebchatSource.Message> messages, String id) {
+        if (messages == null || id == null || id.isEmpty()) return -1;
+        for (int i = 0; i < messages.size(); i++) if (id.equals(messages.get(i).id)) return i;
+        return -1;
+    }
+
+    /**
+     * Una línea de un mensaje para la barra de cita antes de mandar (FR-11): la primera línea del
+     * texto, o el nombre del primer archivo entre corchetes, como el extracto del almacén.
+     */
+    public static String excerpt(WebchatSource.Message m) {
+        if (m == null) return "";
+        String text = m.text.trim();
+        if (!text.isEmpty()) {
+            int nl = text.indexOf('\n');
+            return nl < 0 ? text : text.substring(0, nl).trim();
+        }
+        return m.files.isEmpty() ? "" : "[" + m.files.get(0).name + "]";
+    }
 }

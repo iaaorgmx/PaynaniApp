@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- El menú de un mensaje (paynani #745 FR-8), como el de WhatsApp para Android: arriba la fila de
+     reacciones con el «+» (FR-9), abajo «Reply» (FR-11) y «Copy» (FR-13). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/wc_menu_reactions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/wc_menu_bg"
+        android:elevation="6dp"
+        android:orientation="horizontal"
+        android:padding="4dp" />
+
+    <LinearLayout
+        android:id="@+id/wc_menu_actions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/wc_menu_bg"
+        android:elevation="6dp"
+        android:minWidth="200dp"
+        android:orientation="vertical"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp">
+
+        <TextView
+            android:id="@+id/wc_menu_reply"
+            style="@style/WebchatMenuItem"
+            app:drawableStartCompat="@drawable/ic_wc_reply"
+            android:text="@string/wc_reply" />
+
+        <TextView
+            android:id="@+id/wc_menu_copy"
+            style="@style/WebchatMenuItem"
+            app:drawableStartCompat="@drawable/ic_wc_copy"
+            android:text="@string/wc_copy" />
+    </LinearLayout>
+</LinearLayout>

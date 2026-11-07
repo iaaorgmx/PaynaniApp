@@ -27,7 +27,7 @@ public final class WebchatSources {
     }
 
     /** Sólo en depuración, con la preferencia webchat_demo en paynani_debug.xml. */
-    static boolean demoEnabled(Context context) {
+    public static boolean demoEnabled(Context context) {
         return BuildConfig.DEBUG && context.getSharedPreferences("paynani_debug", Context.MODE_PRIVATE)
                 .getBoolean("webchat_demo", false);
     }

@@ -48,7 +48,19 @@ public final class DemoWebchatSource implements WebchatSource {
                 Arrays.asList(new FileRef(0, "resumen.pdf", "document", 15, PDF))));
         messages.add(new Message("w_demo3", "in", ago(3), "Gracias. ¿Y esta foto del ticket?",
                 Collections.singletonList(new FileRef(0, "ticket.png", "image", 70, PHOTO))));
-        messages.add(new Message("w_demo4", "out", ago(2), "Es el ticket del pedido 1042, ya quedó pagado.", null));
+        messages.add(new Message("w_demo4", "out", ago(2), "Es el ticket del pedido 1042, ya quedó pagado.", null,
+                new ReplyTo("w_demo3", "Julian", "Gracias. ¿Y esta foto del ticket?", false),
+                Collections.singletonList(new Reaction("👍", 1, true))));
+    }
+
+    @Override
+    public boolean canReply() {
+        return true;
+    }
+
+    @Override
+    public boolean canReact() {
+        return true;
     }
 
     @Override
@@ -88,7 +100,7 @@ public final class DemoWebchatSource implements WebchatSource {
     }
 
     @Override
-    public void send(String text, List<String> refs, Callback<Message> cb) {
+    public void send(String text, List<String> refs, String replyTo, Callback<Message> cb) {
         List<FileRef> attached = new ArrayList<>();
         if (refs != null) for (String r : refs) if (uploads.containsKey(r)) attached.add(uploads.remove(r));
         List<Long> sizes = new ArrayList<>();
@@ -98,7 +110,8 @@ public final class DemoWebchatSource implements WebchatSource {
             later(() -> cb.onError(Failure.of(problem)));
             return;
         }
-        Message m = new Message("w_demo_in" + (++seq), "in", Instant.now().toString(), text, attached);
+        Message m = new Message("w_demo_in" + (++seq), "in", Instant.now().toString(), text, attached,
+                quote(replyTo), null);
         messages.add(m);
         later(() -> {
             cb.onResult(m);
@@ -114,6 +127,48 @@ public final class DemoWebchatSource implements WebchatSource {
             if (data == null) cb.onError(Failure.of("not_found"));
             else cb.onResult(data);
         });
+    }
+
+    @Override
+    public void react(String ref, String emoji, Callback<List<Reaction>> cb) {
+        for (int i = 0; i < messages.size(); i++) {
+            Message m = messages.get(i);
+            if (!m.id.equals(ref)) continue;
+            // Como el almacén: una reacción del dueño por mensaje; "" la quita.
+            List<Reaction> out = new ArrayList<>();
+            for (Reaction r : m.reactions) {
+                if (!r.mine) out.add(r);
+                else if (r.count > 1) out.add(new Reaction(r.emoji, r.count - 1, false));
+            }
+            if (emoji != null && !emoji.isEmpty()) {
+                boolean merged = false;
+                for (int j = 0; j < out.size(); j++) {
+                    if (out.get(j).emoji.equals(emoji)) {
+                        out.set(j, new Reaction(emoji, out.get(j).count + 1, true));
+                        merged = true;
+                    }
+                }
+                if (!merged) out.add(new Reaction(emoji, 1, true));
+            }
+            messages.set(i, m.withReactions(out));
+            later(() -> {
+                cb.onResult(out);
+                WebchatEvents.changed(WebchatEvents.REACTIONS, null);
+            });
+            return;
+        }
+        later(() -> cb.onError(Failure.of("not_found")));
+    }
+
+    /** La cita de un w_… del demo, como la arma el almacén; un id que ya no está queda missing. */
+    private ReplyTo quote(String ref) {
+        if (ref == null || ref.isEmpty()) return null;
+        for (Message m : messages) {
+            if (!m.id.equals(ref)) continue;
+            String excerpt = m.text.isEmpty() && !m.files.isEmpty() ? "[" + m.files.get(0).name + "]" : m.text;
+            return new ReplyTo(m.id, m.mine() ? "Julian" : "Andy", excerpt, false);
+        }
+        return new ReplyTo(null, "", "", true);
     }
 
     /** El «agente»: escribe, va mostrando el borrador y contesta. */
