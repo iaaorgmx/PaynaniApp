@@ -19,7 +19,7 @@
                     android:visible="false" />
                 <item
                     android:id="@+id/nav_webchat"
-                    android:icon="@drawable/ic_menu_agent"
+                    android:icon="@drawable/ic_menu_webchat"
                     android:title="@string/opt_webchat" />
             </group>
         </menu>

@@ -1,0 +1,19 @@
+<!-- Webchat: el mismo ícono de PaynaniWeb y PaynaniWebMT (globo de diálogo con tres puntos,
+     trazo de 1.8 en 24×24, de src/View/icons.php «webchat»). Julian 2026-11-07. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:strokeColor="@color/paynani_tinta"
+      android:strokeWidth="1.8"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round"
+      android:pathData="M21,15a2,2 0,0 1,-2 2H7l-4,4V5a2,2 0,0 1,2 -2h14a2,2 0,0 1,2 2z"/>
+  <path
+      android:strokeColor="@color/paynani_tinta"
+      android:strokeWidth="1.8"
+      android:strokeLineCap="round"
+      android:pathData="M8,10h0.01M12,10h0.01M16,10h0.01"/>
+</vector>
