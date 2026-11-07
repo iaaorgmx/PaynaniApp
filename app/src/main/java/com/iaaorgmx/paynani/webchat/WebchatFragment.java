@@ -675,20 +675,25 @@ public class WebchatFragment extends Fragment implements WebchatEvents.Listener 
         AlertDialog dialog = new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.wc_emoji_title)
                 .setView(box)
-                .setPositiveButton(android.R.string.ok, (d, which) -> {
-                    String e = field.getText().toString().trim();
-                    if (!WebchatRules.singleEmoji(e)) {
-                        toast(getString(R.string.wc_error_bad_emoji));
-                        return;
-                    }
-                    react(m, WebchatRules.reactionChoice(m.myReaction(), e));
-                })
+                // El click se pone en onShow: así un texto que no es emoji deja el diálogo abierto.
+                .setPositiveButton(android.R.string.ok, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
         dialog.setOnShowListener(d -> {
             field.requestFocus();
             InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) imm.showSoftInput(field, InputMethodManager.SHOW_IMPLICIT);
+            // Metis en PaynaniApp#21: con algo que no es un solo emoji, el error va en el campo y
+            // el diálogo sigue abierto para corregirlo.
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(x -> {
+                String e = field.getText().toString().trim();
+                if (!WebchatRules.singleEmoji(e)) {
+                    field.setError(getString(R.string.wc_error_bad_emoji));
+                    return;
+                }
+                dialog.dismiss();
+                react(m, WebchatRules.reactionChoice(m.myReaction(), e));
+            });
         });
         if (dialog.getWindow() != null) {
             dialog.getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
