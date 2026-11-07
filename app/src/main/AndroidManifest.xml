@@ -51,6 +51,12 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
+        <!-- «Development team» (#17), desde «About». -->
+        <activity
+            android:name=".TeamActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
         <!-- Webchat (paynani PRD #653): abrir con otra app un archivo descargado de la conversación. -->
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -77,11 +77,15 @@ public class AboutFragment extends Fragment {
         addRow(credits, R.drawable.ic_about_libraries, R.string.about_libraries, getString(R.string.about_libraries_detail), null);
         addRow(credits, R.drawable.ic_about_font, R.string.about_logo_font, getString(R.string.about_logo_font_detail), null);
         addRow(credits, R.drawable.ic_about_icons, R.string.about_icons, getString(R.string.about_icons_detail), null);
+        // Como en PaynaniWeb (#17): el último de Créditos abre la lista del equipo, dentro de la app.
+        View team = addRow(credits, R.drawable.ic_about_team, R.string.about_team, getString(R.string.about_team_detail), null);
+        team.setBackgroundResource(outValue(android.R.attr.selectableItemBackground));
+        team.setOnClickListener(b -> startActivity(new Intent(requireContext(), TeamActivity.class)));
         return v;
     }
 
     /** Un renglón con ícono, título y detalle; si trae url, la abre en el navegador. */
-    private void addRow(LinearLayout parent, @DrawableRes int icon, @StringRes int title, String detail, final String url) {
+    private View addRow(LinearLayout parent, @DrawableRes int icon, @StringRes int title, String detail, final String url) {
         View row = rows.inflate(R.layout.item_about_row, parent, false);
         ((ImageView) row.findViewById(R.id.about_row_icon)).setImageResource(icon);
         ((TextView) row.findViewById(R.id.about_row_title)).setText(title);
@@ -104,5 +108,13 @@ public class AboutFragment extends Fragment {
         // Se lee como uno: título y detalle.
         row.setContentDescription(getString(title) + ". " + detail);
         parent.addView(row);
+        return row;
+    }
+
+    /** El drawable de un atributo del tema (el fondo con el efecto al tocar). */
+    private int outValue(int attr) {
+        android.util.TypedValue tv = new android.util.TypedValue();
+        requireContext().getTheme().resolveAttribute(attr, tv, true);
+        return tv.resourceId;
     }
 }

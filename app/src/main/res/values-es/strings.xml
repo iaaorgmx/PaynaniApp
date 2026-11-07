@@ -108,7 +108,7 @@
     <string name="about_news">Novedades</string>
     <string name="about_news_detail">Los cambios de cada versión</string>
     <string name="about_libraries">Bibliotecas de código abierto</string>
-    <string name="about_libraries_detail">AndroidX, Material Components, Room, OkHttp y ZXing. Licencia Apache 2.0.</string>
+    <string name="about_libraries_detail">AndroidX, Material Components, OkHttp, ZXing y Tink (security-crypto). Licencia Apache 2.0.</string>
     <string name="about_logo_font">Tipografía del logotipo</string>
     <string name="about_logo_font_detail">Spectral, licencia SIL OFL 1.1</string>
     <string name="about_icons">Íconos</string>
@@ -247,4 +247,18 @@
     <string name="agent_ago_d">%1$d d</string>
     <string name="agent_never">nunca</string>
     <string name="agent_status_dot">● %1$s</string>
+    <!-- «Development team» (#17), con los textos de «Acerca de › Equipo» de PaynaniWeb. -->
+    <string name="about_team">Development team</string>
+    <string name="about_team_detail">Los humanos y agentes de IA que hacen paynani</string>
+    <string name="about_team_lead">Los humanos y agentes de IA que han colaborado en paynani, PaynaniWeb y PaynaniApp. Cada uno lleva a su perfil de GitHub.</string>
+    <string name="about_team_profile">Perfil de GitHub de %1$s</string>
+    <string name="about_team_type_agent">Agente de IA</string>
+    <string name="about_team_type_human">Humano</string>
+    <string name="about_team_role_maintainer">Maintainer</string>
+    <string name="about_team_role_committer">Committer</string>
+    <string name="about_team_role_contributor">Contributor</string>
+    <string name="about_team_scope_core">Núcleo de paynani</string>
+    <string name="about_team_scope_devops">Instalación y DevOps</string>
+    <string name="about_team_scope_lead">Líder del proyecto</string>
+    <string name="about_team_scope_review">Revisiones y pruebas</string>
 </resources>
