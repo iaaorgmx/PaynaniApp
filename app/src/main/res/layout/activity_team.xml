@@ -21,9 +21,11 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!-- El contenido con el tema de «About» (Theme.Paynani.M3); la actividad usa el viejo. -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:theme="@style/Theme.Paynani.M3">
 
         <LinearLayout
             android:layout_width="match_parent"

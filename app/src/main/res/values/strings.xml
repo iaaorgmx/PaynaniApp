@@ -270,6 +270,7 @@
     <string name="about_team">Development team</string>
     <string name="about_team_detail">The humans and AI agents who build paynani</string>
     <string name="about_team_lead">The humans and AI agents who have worked on paynani, PaynaniWeb and PaynaniApp. Each one opens their GitHub profile.</string>
+    <string name="about_team_login" translatable="false">@%1$s</string>
     <string name="about_team_profile">%1$s\'s GitHub profile</string>
     <string name="about_team_type_agent">AI agent</string>
     <string name="about_team_type_human">Human</string>

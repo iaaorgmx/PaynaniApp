@@ -99,7 +99,7 @@ public class TeamActivity extends AppCompatActivity {
             L.e("TeamActivity", "avatar " + login + ": " + e);
         }
         ((TextView) row.findViewById(R.id.team_name)).setText(name);
-        ((TextView) row.findViewById(R.id.team_login)).setText("@" + login);
+        ((TextView) row.findViewById(R.id.team_login)).setText(getString(R.string.about_team_login, login));
         ((TextView) row.findViewById(R.id.team_detail)).setText(detail(m));
         row.setContentDescription(name + ". " + detail(m) + ". " + getString(R.string.about_team_profile, name));
         row.setOnClickListener(v -> {
