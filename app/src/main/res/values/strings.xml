@@ -127,7 +127,7 @@
     <string name="about_news">What\'s new</string>
     <string name="about_news_detail">Changes in each version</string>
     <string name="about_libraries">Open source libraries</string>
-    <string name="about_libraries_detail">AndroidX, Material Components, Room, OkHttp and ZXing. Apache 2.0 license.</string>
+    <string name="about_libraries_detail">AndroidX, Material Components, OkHttp, ZXing and Tink (security-crypto). Apache 2.0 license.</string>
     <string name="about_logo_font">Logo typeface</string>
     <string name="about_logo_font_detail">Spectral, SIL OFL 1.1 license</string>
     <string name="about_icons">Icons</string>
@@ -266,4 +266,23 @@
     <string name="agent_ago_d">%1$d d</string>
     <string name="agent_never">never</string>
     <string name="agent_status_dot">● %1$s</string>
+    <!-- «Development team» (#17), con los textos de «Acerca de › Equipo» de PaynaniWeb. -->
+    <string name="about_team">Development team</string>
+    <string name="about_team_detail">The humans and AI agents who build paynani</string>
+    <string name="about_team_lead">The humans and AI agents who have worked on paynani, PaynaniWeb and PaynaniApp. Each one opens their GitHub profile.</string>
+    <string name="about_team_profile">%1$s\'s GitHub profile</string>
+    <string name="about_team_type_agent">AI agent</string>
+    <string name="about_team_type_human">Human</string>
+    <string name="about_team_role_maintainer">Maintainer</string>
+    <string name="about_team_role_committer">Committer</string>
+    <string name="about_team_role_contributor">Contributor</string>
+    <string name="about_team_scope_app" translatable="false">PaynaniApp</string>
+    <string name="about_team_scope_core">paynani core</string>
+    <string name="about_team_scope_devops">Installs and DevOps</string>
+    <string name="about_team_scope_lead">Project lead</string>
+    <string name="about_team_scope_review">Reviews and testing</string>
+    <string name="about_team_scope_web" translatable="false">PaynaniWeb</string>
+    <string name="about_team_project_paynani" translatable="false">paynani</string>
+    <string name="about_team_project_paynaniweb" translatable="false">PaynaniWeb</string>
+    <string name="about_team_project_paynaniapp" translatable="false">PaynaniApp</string>
 </resources>
